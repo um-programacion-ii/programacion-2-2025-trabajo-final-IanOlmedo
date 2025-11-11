@@ -1,0 +1,5 @@
+org.springframework.test.context.ContextCustomizerFactory = \
+    ar.edu.um.gestioneventos.config.\
+    SqlTestContainersSpringContextCustomizerFactory,ar.edu.um.gestioneventos.\
+    config.RedisTestContainersSpringContextCustomizerFactory,ar.edu.um.\
+    gestioneventos.config.KafkaTestContainersSpringContextCustomizerFactory

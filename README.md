@@ -1,1 +1,11 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/IEOUmR9z)
+# Trabajo Final Programación 2025 – Gestión de Eventos
+
+Este repositorio contiene el desarrollo del trabajo de regularización 2025.
+
+## Componentes
+
+- `backend/` – Backend, desarrollado con Spring Boot usando JHipster.
+- `proxy/` – Servicio proxy, con acceso a Kafka y Redis de la cátedra.
+- `mobile/` – Cliente móvil en Kotlin Multiplatform (KMP).
+- `docs/` – Documentación adicional, diagramas, notas, etc.
+
