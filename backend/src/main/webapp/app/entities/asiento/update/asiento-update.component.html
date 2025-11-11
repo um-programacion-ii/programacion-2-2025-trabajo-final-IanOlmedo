@@ -1,0 +1,97 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-asiento-heading" data-cy="AsientoCreateUpdateHeading" jhiTranslate="gestionEventosApp.asiento.home.createOrEditLabel">
+        Crear o editar Asiento
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="gestionEventosApp.asiento.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let filaRef = editForm.get('fila')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_fila" jhiTranslate="gestionEventosApp.asiento.fila">Fila</label>
+          <input type="text" class="form-control" name="fila" id="field_fila" data-cy="fila" formControlName="fila" />
+          @if (filaRef.invalid && (filaRef.dirty || filaRef.touched)) {
+            <div>
+              @if (editForm.get('fila')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let numeroRef = editForm.get('numero')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_numero" jhiTranslate="gestionEventosApp.asiento.numero">Numero</label>
+          <input type="number" class="form-control" name="numero" id="field_numero" data-cy="numero" formControlName="numero" />
+          @if (numeroRef.invalid && (numeroRef.dirty || numeroRef.touched)) {
+            <div>
+              @if (editForm.get('numero')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">Este campo es obligatorio.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('numero')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >Este campo debe ser un número.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_estado" jhiTranslate="gestionEventosApp.asiento.estado">Estado</label>
+          <select class="form-control" name="estado" formControlName="estado" id="field_estado" data-cy="estado">
+            <option [ngValue]="null">{{ 'gestionEventosApp.EstadoAsiento.null' | translate }}</option>
+            @for (estadoAsiento of estadoAsientoValues; track $index) {
+              <option [value]="estadoAsiento">{{ 'gestionEventosApp.EstadoAsiento.' + estadoAsiento | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_evento_con_asientos" jhiTranslate="gestionEventosApp.asiento.evento_con_asientos"
+            >Evento Con Asientos</label
+          >
+          <select
+            class="form-control"
+            id="field_evento_con_asientos"
+            data-cy="evento_con_asientos"
+            name="evento_con_asientos"
+            formControlName="evento_con_asientos"
+            [compareWith]="compareEvento"
+          >
+            <option [ngValue]="null"></option>
+            @for (eventoOption of eventosSharedCollection; track $index) {
+              <option [ngValue]="eventoOption">{{ eventoOption.titulo }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Guardar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
