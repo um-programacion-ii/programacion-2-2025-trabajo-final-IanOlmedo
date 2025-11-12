@@ -1,0 +1,61 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (asiento(); as asientoRef) {
+      <div>
+        <h2 data-cy="asientoDetailsHeading"><span jhiTranslate="gestionEventosApp.asiento.detail.title">Asiento</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ asientoRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.asiento.fila">Fila</span></dt>
+          <dd>
+            <span>{{ asientoRef.fila }}</span>
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.asiento.numero">Numero</span></dt>
+          <dd>
+            <span>{{ asientoRef.numero }}</span>
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.asiento.estado">Estado</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gestionEventosApp.EstadoAsiento.' + (asientoRef.estado ?? 'null')">{{
+              { null: '', LIBRE: 'LIBRE', VENDIDO: 'VENDIDO', BLOQUEADO: 'BLOQUEADO' }[asientoRef.estado ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.asiento.evento_con_asientos">Evento Con Asientos</span></dt>
+          <dd>
+            @if (asiento()!.evento_con_asientos) {
+              <div>
+                <a [routerLink]="['/evento', asiento()!.evento_con_asientos?.id, 'view']">{{ asientoRef.evento_con_asientos?.titulo }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.asiento.n">N</span></dt>
+          <dd>
+            @for (n of asientoRef.ns; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/venta', n.id, 'view']">{{ n?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/asiento', asientoRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

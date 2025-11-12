@@ -74,6 +74,12 @@ public class CacheConfiguration {
             createCache(cm, ar.edu.um.gestioneventos.repository.UserRepository.USERS_BY_LOGIN_CACHE, jcacheConfiguration);
             createCache(cm, ar.edu.um.gestioneventos.repository.UserRepository.USERS_BY_EMAIL_CACHE, jcacheConfiguration);
             createCache(cm, ar.edu.um.gestioneventos.domain.Authority.class.getName(), jcacheConfiguration);
+            createCache(cm, ar.edu.um.gestioneventos.domain.Evento.class.getName(), jcacheConfiguration);
+            createCache(cm, ar.edu.um.gestioneventos.domain.Asiento.class.getName(), jcacheConfiguration);
+            createCache(cm, ar.edu.um.gestioneventos.domain.Asiento.class.getName() + ".ns", jcacheConfiguration);
+            createCache(cm, ar.edu.um.gestioneventos.domain.Venta.class.getName(), jcacheConfiguration);
+            createCache(cm, ar.edu.um.gestioneventos.domain.Venta.class.getName() + ".asientos", jcacheConfiguration);
+            createCache(cm, ar.edu.um.gestioneventos.domain.SesionUsuario.class.getName(), jcacheConfiguration);
             // jhipster-needle-redis-add-entry
         };
     }

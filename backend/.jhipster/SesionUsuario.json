@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "changelogDate": "20251112120458"
+  },
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "estadoFlujo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "datosTemporales",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ultimaActualizacion",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "name": "SesionUsuario",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "id": true,
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

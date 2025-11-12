@@ -1,0 +1,10 @@
+{
+  "gestionEventosApp": {
+    "EstadoAsiento": {
+      "null": "",
+      "LIBRE": "LIBRE",
+      "VENDIDO": "VENDIDO",
+      "BLOQUEADO": "BLOQUEADO"
+    }
+  }
+}
