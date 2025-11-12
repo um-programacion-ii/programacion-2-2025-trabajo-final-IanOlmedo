@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type AsientoFormGroupInput = IAsiento | PartialWithRequiredKeyOf<NewAsiento>;
 
-type AsientoFormDefaults = Pick<NewAsiento, 'id'>;
+type AsientoFormDefaults = Pick<NewAsiento, 'id' | 'ns'>;
 
 type AsientoFormGroupContent = {
   id: FormControl<IAsiento['id'] | NewAsiento['id']>;
@@ -22,6 +22,7 @@ type AsientoFormGroupContent = {
   numero: FormControl<IAsiento['numero']>;
   estado: FormControl<IAsiento['estado']>;
   evento_con_asientos: FormControl<IAsiento['evento_con_asientos']>;
+  ns: FormControl<IAsiento['ns']>;
 };
 
 export type AsientoFormGroup = FormGroup<AsientoFormGroupContent>;
@@ -49,6 +50,7 @@ export class AsientoFormService {
       }),
       estado: new FormControl(asientoRawValue.estado),
       evento_con_asientos: new FormControl(asientoRawValue.evento_con_asientos),
+      ns: new FormControl(asientoRawValue.ns ?? []),
     });
   }
 
@@ -69,6 +71,7 @@ export class AsientoFormService {
   private getFormDefaults(): AsientoFormDefaults {
     return {
       id: null,
+      ns: [],
     };
   }
 }

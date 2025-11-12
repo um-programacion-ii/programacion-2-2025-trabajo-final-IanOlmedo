@@ -37,6 +37,15 @@
               </div>
             }
           </dd>
+          <dt><span jhiTranslate="gestionEventosApp.asiento.n">N</span></dt>
+          <dd>
+            @for (n of asientoRef.ns; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/venta', n.id, 'view']">{{ n?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

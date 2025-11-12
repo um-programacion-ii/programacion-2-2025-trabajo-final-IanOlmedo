@@ -325,8 +325,6 @@ class EventoResourceIT {
         Evento partialUpdatedEvento = new Evento();
         partialUpdatedEvento.setId(evento.getId());
 
-        partialUpdatedEvento.titulo(UPDATED_TITULO).fecha(UPDATED_FECHA).resumen(UPDATED_RESUMEN);
-
         restEventoMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedEvento.getId())

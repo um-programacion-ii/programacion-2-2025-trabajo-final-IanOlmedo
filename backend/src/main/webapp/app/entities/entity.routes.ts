@@ -16,6 +16,16 @@ const routes: Routes = [
     data: { pageTitle: 'gestionEventosApp.asiento.home.title' },
     loadChildren: () => import('./asiento/asiento.routes'),
   },
+  {
+    path: 'venta',
+    data: { pageTitle: 'gestionEventosApp.venta.home.title' },
+    loadChildren: () => import('./venta/venta.routes'),
+  },
+  {
+    path: 'sesion-usuario',
+    data: { pageTitle: 'gestionEventosApp.sesionUsuario.home.title' },
+    loadChildren: () => import('./sesion-usuario/sesion-usuario.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

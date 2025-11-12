@@ -1,9 +1,12 @@
 package ar.edu.um.gestioneventos.domain;
 
 import ar.edu.um.gestioneventos.domain.enumeration.EstadoAsiento;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Asiento.
@@ -35,6 +38,10 @@ public class Asiento implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Evento evento_con_asientos;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "asientos")
+    @JsonIgnoreProperties(value = { "evento", "asientos", "usuario" }, allowSetters = true)
+    private Set<Venta> ns = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -100,6 +107,37 @@ public class Asiento implements Serializable {
 
     public Asiento evento_con_asientos(Evento evento) {
         this.setEvento_con_asientos(evento);
+        return this;
+    }
+
+    public Set<Venta> getNs() {
+        return this.ns;
+    }
+
+    public void setNs(Set<Venta> ventas) {
+        if (this.ns != null) {
+            this.ns.forEach(i -> i.removeAsiento(this));
+        }
+        if (ventas != null) {
+            ventas.forEach(i -> i.addAsiento(this));
+        }
+        this.ns = ventas;
+    }
+
+    public Asiento ns(Set<Venta> ventas) {
+        this.setNs(ventas);
+        return this;
+    }
+
+    public Asiento addN(Venta venta) {
+        this.ns.add(venta);
+        venta.getAsientos().add(this);
+        return this;
+    }
+
+    public Asiento removeN(Venta venta) {
+        this.ns.remove(venta);
+        venta.getAsientos().remove(this);
         return this;
     }
 

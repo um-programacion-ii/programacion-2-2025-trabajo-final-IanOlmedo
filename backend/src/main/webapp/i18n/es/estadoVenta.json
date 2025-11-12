@@ -1,0 +1,10 @@
+{
+  "gestionEventosApp": {
+    "EstadoVenta": {
+      "null": "",
+      "PENDIENTE": "PENDIENTE",
+      "CONFIRMADA": "CONFIRMADA",
+      "FALLIDA": "FALLIDA"
+    }
+  }
+}

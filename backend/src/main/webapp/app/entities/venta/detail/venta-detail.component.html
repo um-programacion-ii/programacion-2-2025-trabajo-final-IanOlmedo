@@ -1,0 +1,61 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (venta(); as ventaRef) {
+      <div>
+        <h2 data-cy="ventaDetailsHeading"><span jhiTranslate="gestionEventosApp.venta.detail.title">Venta</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ ventaRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.venta.fechaVenta">Fecha Venta</span></dt>
+          <dd>
+            <span>{{ ventaRef.fechaVenta | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.venta.estado">Estado</span></dt>
+          <dd>
+            <span [jhiTranslate]="'gestionEventosApp.EstadoVenta.' + (ventaRef.estado ?? 'null')">{{
+              { null: '', PENDIENTE: 'PENDIENTE', CONFIRMADA: 'CONFIRMADA', FALLIDA: 'FALLIDA' }[ventaRef.estado ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.venta.evento">Evento</span></dt>
+          <dd>
+            @if (venta()!.evento) {
+              <div>
+                <a [routerLink]="['/evento', venta()!.evento?.id, 'view']">{{ ventaRef.evento?.titulo }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.venta.asiento">Asiento</span></dt>
+          <dd>
+            @for (asiento of ventaRef.asientos; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/asiento', asiento.id, 'view']">{{ asiento?.numero }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+          <dt><span jhiTranslate="gestionEventosApp.venta.usuario">Usuario</span></dt>
+          <dd>
+            <span>{{ ventaRef.usuario?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Volver</span>
+        </button>
+
+        <button type="button" [routerLink]="['/venta', ventaRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

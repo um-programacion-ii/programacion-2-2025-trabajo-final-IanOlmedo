@@ -21,7 +21,8 @@
       "fila": "Fila",
       "numero": "Numero",
       "estado": "Estado",
-      "evento_con_asientos": "Evento Con Asientos"
+      "evento_con_asientos": "Evento Con Asientos",
+      "n": "N"
     }
   }
 }

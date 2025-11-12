@@ -24,6 +24,7 @@ describe('Asiento Form Service', () => {
             numero: expect.any(Object),
             estado: expect.any(Object),
             evento_con_asientos: expect.any(Object),
+            ns: expect.any(Object),
           }),
         );
       });
@@ -38,6 +39,7 @@ describe('Asiento Form Service', () => {
             numero: expect.any(Object),
             estado: expect.any(Object),
             evento_con_asientos: expect.any(Object),
+            ns: expect.any(Object),
           }),
         );
       });

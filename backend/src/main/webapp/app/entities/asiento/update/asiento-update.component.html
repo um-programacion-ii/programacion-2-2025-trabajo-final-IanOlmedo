@@ -75,6 +75,15 @@
             }
           </select>
         </div>
+
+        <div class="mb-3">
+          <label for="field_ns" jhiTranslate="gestionEventosApp.asiento.n">N</label>
+          <select class="form-control" id="field_ns" data-cy="n" multiple name="ns" formControlName="ns" [compareWith]="compareVenta">
+            @for (ventaOption of ventasSharedCollection; track $index) {
+              <option [ngValue]="ventaOption">{{ ventaOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>

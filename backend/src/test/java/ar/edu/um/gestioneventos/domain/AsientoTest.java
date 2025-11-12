@@ -2,9 +2,12 @@ package ar.edu.um.gestioneventos.domain;
 
 import static ar.edu.um.gestioneventos.domain.AsientoTestSamples.*;
 import static ar.edu.um.gestioneventos.domain.EventoTestSamples.*;
+import static ar.edu.um.gestioneventos.domain.VentaTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ar.edu.um.gestioneventos.web.rest.TestUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class AsientoTest {
@@ -33,5 +36,27 @@ class AsientoTest {
 
         asiento.evento_con_asientos(null);
         assertThat(asiento.getEvento_con_asientos()).isNull();
+    }
+
+    @Test
+    void nTest() {
+        Asiento asiento = getAsientoRandomSampleGenerator();
+        Venta ventaBack = getVentaRandomSampleGenerator();
+
+        asiento.addN(ventaBack);
+        assertThat(asiento.getNs()).containsOnly(ventaBack);
+        assertThat(ventaBack.getAsientos()).containsOnly(asiento);
+
+        asiento.removeN(ventaBack);
+        assertThat(asiento.getNs()).doesNotContain(ventaBack);
+        assertThat(ventaBack.getAsientos()).doesNotContain(asiento);
+
+        asiento.ns(new HashSet<>(Set.of(ventaBack)));
+        assertThat(asiento.getNs()).containsOnly(ventaBack);
+        assertThat(ventaBack.getAsientos()).containsOnly(asiento);
+
+        asiento.setNs(new HashSet<>());
+        assertThat(asiento.getNs()).doesNotContain(ventaBack);
+        assertThat(ventaBack.getAsientos()).doesNotContain(asiento);
     }
 }

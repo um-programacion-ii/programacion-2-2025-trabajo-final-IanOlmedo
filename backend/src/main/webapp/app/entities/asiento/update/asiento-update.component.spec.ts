@@ -6,8 +6,10 @@ import { Subject, from, of } from 'rxjs';
 
 import { IEvento } from 'app/entities/evento/evento.model';
 import { EventoService } from 'app/entities/evento/service/evento.service';
-import { AsientoService } from '../service/asiento.service';
+import { IVenta } from 'app/entities/venta/venta.model';
+import { VentaService } from 'app/entities/venta/service/venta.service';
 import { IAsiento } from '../asiento.model';
+import { AsientoService } from '../service/asiento.service';
 import { AsientoFormService } from './asiento-form.service';
 
 import { AsientoUpdateComponent } from './asiento-update.component';
@@ -19,6 +21,7 @@ describe('Asiento Management Update Component', () => {
   let asientoFormService: AsientoFormService;
   let asientoService: AsientoService;
   let eventoService: EventoService;
+  let ventaService: VentaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,6 +45,7 @@ describe('Asiento Management Update Component', () => {
     asientoFormService = TestBed.inject(AsientoFormService);
     asientoService = TestBed.inject(AsientoService);
     eventoService = TestBed.inject(EventoService);
+    ventaService = TestBed.inject(VentaService);
 
     comp = fixture.componentInstance;
   });
@@ -69,15 +73,40 @@ describe('Asiento Management Update Component', () => {
       expect(comp.eventosSharedCollection).toEqual(expectedCollection);
     });
 
+    it('should call Venta query and add missing value', () => {
+      const asiento: IAsiento = { id: 27821 };
+      const ns: IVenta[] = [{ id: 10395 }];
+      asiento.ns = ns;
+
+      const ventaCollection: IVenta[] = [{ id: 10395 }];
+      jest.spyOn(ventaService, 'query').mockReturnValue(of(new HttpResponse({ body: ventaCollection })));
+      const additionalVentas = [...ns];
+      const expectedCollection: IVenta[] = [...additionalVentas, ...ventaCollection];
+      jest.spyOn(ventaService, 'addVentaToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ asiento });
+      comp.ngOnInit();
+
+      expect(ventaService.query).toHaveBeenCalled();
+      expect(ventaService.addVentaToCollectionIfMissing).toHaveBeenCalledWith(
+        ventaCollection,
+        ...additionalVentas.map(expect.objectContaining),
+      );
+      expect(comp.ventasSharedCollection).toEqual(expectedCollection);
+    });
+
     it('should update editForm', () => {
       const asiento: IAsiento = { id: 27821 };
       const evento_con_asientos: IEvento = { id: 11280 };
       asiento.evento_con_asientos = evento_con_asientos;
+      const n: IVenta = { id: 10395 };
+      asiento.ns = [n];
 
       activatedRoute.data = of({ asiento });
       comp.ngOnInit();
 
       expect(comp.eventosSharedCollection).toContainEqual(evento_con_asientos);
+      expect(comp.ventasSharedCollection).toContainEqual(n);
       expect(comp.asiento).toEqual(asiento);
     });
   });
@@ -158,6 +187,16 @@ describe('Asiento Management Update Component', () => {
         jest.spyOn(eventoService, 'compareEvento');
         comp.compareEvento(entity, entity2);
         expect(eventoService.compareEvento).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareVenta', () => {
+      it('should forward to ventaService', () => {
+        const entity = { id: 10395 };
+        const entity2 = { id: 27589 };
+        jest.spyOn(ventaService, 'compareVenta');
+        comp.compareVenta(entity, entity2);
+        expect(ventaService.compareVenta).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

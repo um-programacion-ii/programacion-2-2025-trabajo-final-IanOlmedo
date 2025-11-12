@@ -63,6 +63,7 @@ public class AsientoAsserts {
             .as("Verify Asiento relationships")
             .satisfies(a ->
                 assertThat(a.getEvento_con_asientos()).as("check evento_con_asientos").isEqualTo(expected.getEvento_con_asientos())
-            );
+            )
+            .satisfies(a -> assertThat(a.getNs()).as("check ns").isEqualTo(expected.getNs()));
     }
 }

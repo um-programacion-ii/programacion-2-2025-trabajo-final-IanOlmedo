@@ -3,7 +3,9 @@ package ar.edu.um.gestioneventos.service.dto;
 import ar.edu.um.gestioneventos.domain.enumeration.EstadoAsiento;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link ar.edu.um.gestioneventos.domain.Asiento} entity.
@@ -22,6 +24,8 @@ public class AsientoDTO implements Serializable {
     private EstadoAsiento estado;
 
     private EventoDTO evento_con_asientos;
+
+    private Set<VentaDTO> ns = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -63,6 +67,14 @@ public class AsientoDTO implements Serializable {
         this.evento_con_asientos = evento_con_asientos;
     }
 
+    public Set<VentaDTO> getNs() {
+        return ns;
+    }
+
+    public void setNs(Set<VentaDTO> ns) {
+        this.ns = ns;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -93,6 +105,7 @@ public class AsientoDTO implements Serializable {
             ", numero=" + getNumero() +
             ", estado='" + getEstado() + "'" +
             ", evento_con_asientos=" + getEvento_con_asientos() +
+            ", ns=" + getNs() +
             "}";
     }
 }

@@ -349,8 +349,6 @@ class AsientoResourceIT {
         Asiento partialUpdatedAsiento = new Asiento();
         partialUpdatedAsiento.setId(asiento.getId());
 
-        partialUpdatedAsiento.fila(UPDATED_FILA).numero(UPDATED_NUMERO);
-
         restAsientoMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedAsiento.getId())

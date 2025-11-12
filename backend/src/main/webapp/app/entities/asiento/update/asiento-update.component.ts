@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IEvento } from 'app/entities/evento/evento.model';
 import { EventoService } from 'app/entities/evento/service/evento.service';
+import { IVenta } from 'app/entities/venta/venta.model';
+import { VentaService } from 'app/entities/venta/service/venta.service';
 import { EstadoAsiento } from 'app/entities/enumerations/estado-asiento.model';
 import { AsientoService } from '../service/asiento.service';
 import { IAsiento } from '../asiento.model';
@@ -25,16 +27,20 @@ export class AsientoUpdateComponent implements OnInit {
   estadoAsientoValues = Object.keys(EstadoAsiento);
 
   eventosSharedCollection: IEvento[] = [];
+  ventasSharedCollection: IVenta[] = [];
 
   protected asientoService = inject(AsientoService);
   protected asientoFormService = inject(AsientoFormService);
   protected eventoService = inject(EventoService);
+  protected ventaService = inject(VentaService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: AsientoFormGroup = this.asientoFormService.createAsientoFormGroup();
 
   compareEvento = (o1: IEvento | null, o2: IEvento | null): boolean => this.eventoService.compareEvento(o1, o2);
+
+  compareVenta = (o1: IVenta | null, o2: IVenta | null): boolean => this.ventaService.compareVenta(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ asiento }) => {
@@ -88,6 +94,10 @@ export class AsientoUpdateComponent implements OnInit {
       this.eventosSharedCollection,
       asiento.evento_con_asientos,
     );
+    this.ventasSharedCollection = this.ventaService.addVentaToCollectionIfMissing<IVenta>(
+      this.ventasSharedCollection,
+      ...(asiento.ns ?? []),
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -98,5 +108,11 @@ export class AsientoUpdateComponent implements OnInit {
         map((eventos: IEvento[]) => this.eventoService.addEventoToCollectionIfMissing<IEvento>(eventos, this.asiento?.evento_con_asientos)),
       )
       .subscribe((eventos: IEvento[]) => (this.eventosSharedCollection = eventos));
+
+    this.ventaService
+      .query()
+      .pipe(map((res: HttpResponse<IVenta[]>) => res.body ?? []))
+      .pipe(map((ventas: IVenta[]) => this.ventaService.addVentaToCollectionIfMissing<IVenta>(ventas, ...(this.asiento?.ns ?? []))))
+      .subscribe((ventas: IVenta[]) => (this.ventasSharedCollection = ventas));
   }
 }
