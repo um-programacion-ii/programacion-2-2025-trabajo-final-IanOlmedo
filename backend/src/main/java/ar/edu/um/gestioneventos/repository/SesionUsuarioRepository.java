@@ -14,6 +14,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SesionUsuarioRepository extends JpaRepository<SesionUsuario, Long> {
+
+    // ✅ Buscar por el id del usuario (propiedad anidada de la relación 'user')
+    Optional<SesionUsuario> findOneByUser_Id(Long userId);
+
+    // Conveniencias con fetch de la relación 'user'
     default Optional<SesionUsuario> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }
@@ -35,6 +40,6 @@ public interface SesionUsuarioRepository extends JpaRepository<SesionUsuario, Lo
     @Query("select sesionUsuario from SesionUsuario sesionUsuario left join fetch sesionUsuario.user")
     List<SesionUsuario> findAllWithToOneRelationships();
 
-    @Query("select sesionUsuario from SesionUsuario sesionUsuario left join fetch sesionUsuario.user where sesionUsuario.id =:id")
+    @Query("select sesionUsuario from SesionUsuario sesionUsuario left join fetch sesionUsuario.user where sesionUsuario.id = :id")
     Optional<SesionUsuario> findOneWithToOneRelationships(@Param("id") Long id);
 }
