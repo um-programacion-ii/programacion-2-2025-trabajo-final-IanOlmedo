@@ -14,9 +14,4 @@ Se implementa la persistencia y reanudación del flujo de usuario:
 - POST `/api/sesion/guardar` → persiste estado.
 - GET `/api/sesion/recuperar/1` → retorna estado guardado.
 
-### Issue asociado
-Closes #<número del issue de reanudación de flujo>
-
-### Milestone
-Backend JHipster (autenticación + modelo de dominio)
 
