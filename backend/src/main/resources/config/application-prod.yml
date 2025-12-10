@@ -25,6 +25,11 @@ management:
       export:
         enabled: false
 
+app:
+  proxy:
+    base-url: http://localhost:8082
+
+
 spring:
   devtools:
     restart:
