@@ -1,28 +1,23 @@
 pluginManagement {
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    }
-    plugins {
-        id("com.android.application") version "8.4.1"
-        id("com.android.library") version "8.4.1"
-
-        kotlin("android") version "2.0.0"
-        kotlin("multiplatform") version "2.0.0"
-        kotlin("plugin.serialization") version "2.0.0"
-        id("org.jetbrains.compose") version "1.6.10"
     }
 }
-
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
 }
 
-rootProject.name = "gestioneventos-mobile"
-include(":androidApp")
-include(":shared")
+rootProject.name = "mobile"
+include(":app")
