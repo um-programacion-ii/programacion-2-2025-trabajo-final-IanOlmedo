@@ -2,6 +2,7 @@ package ar.edu.um.gestioneventos.shared.repository
 
 import ar.edu.um.gestioneventos.shared.api.gateway.EventosApiGateway
 import ar.edu.um.gestioneventos.shared.api.local.EventosApiLocal
+import ar.edu.um.gestioneventos.shared.api.local.VentasApiLocal
 import ar.edu.um.gestioneventos.shared.config.AppConfig
 import ar.edu.um.gestioneventos.shared.config.DataSourceMode
 import ar.edu.um.gestioneventos.shared.domain.Asiento
@@ -9,8 +10,13 @@ import ar.edu.um.gestioneventos.shared.domain.Evento
 import ar.edu.um.gestioneventos.shared.domain.ReservaRequest
 import ar.edu.um.gestioneventos.shared.domain.ReservaResult
 
+import ar.edu.um.gestioneventos.shared.api.local.VentaCreateRequest
+import ar.edu.um.gestioneventos.shared.api.local.IdRefDto
+
+
 class EventosRepository(
     private val localApi: EventosApiLocal,
+    private val ventasApiLocal: VentasApiLocal,
     private val gatewayApi: EventosApiGateway
 ) {
     suspend fun getEventos(): List<Evento> =
@@ -68,15 +74,25 @@ class EventosRepository(
     suspend fun reservar(request: ReservaRequest): ReservaResult =
         when (AppConfig.DATA_SOURCE_MODE) {
             DataSourceMode.LOCAL_DB -> {
-                // Por ahora: modo local no reserva por gateway.
-                // Cuando definamos el endpoint local de venta/reserva, lo implementamos acá.
+                val venta = ventasApiLocal.createVenta(
+                    VentaCreateRequest(
+                        estado = "PENDIENTE",
+                        evento = IdRefDto(request.eventoId),
+                        asientos = request.asientoIds.map { IdRefDto(it) }
+                    )
+                )
+
                 ReservaResult(
-                    ok = false,
-                    mensaje = "Reserva local aún no implementada (falta endpoint local de venta/reserva)."
+                    ok = venta.id != null,
+                    mensaje = if (venta.id != null) "Venta creada (local)" else "No se pudo crear la venta",
+                    codigo = venta.id?.toString(),
+                    total = null
                 )
             }
+
             DataSourceMode.GATEWAY_CATEDRA -> {
                 gatewayApi.reservar(request)
             }
         }
+
 }
