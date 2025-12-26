@@ -1,4 +1,4 @@
-package ar.edu.um.gestioneventos.shared.model
+package ar.edu.um.gestioneventos.shared.api
 
 import ar.edu.um.gestioneventos.shared.config.AppConfig
 import ar.edu.um.gestioneventos.shared.model.AuthRequest
