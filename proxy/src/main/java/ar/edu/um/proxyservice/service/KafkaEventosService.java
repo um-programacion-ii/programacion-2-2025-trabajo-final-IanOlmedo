@@ -21,12 +21,12 @@ import org.springframework.stereotype.Service;
 
 /**
  * Servicio responsable de:
- *  - Consumir mensajes de Kafka de la cátedra (eventos / asientos).
- *  - Publicar mensajes de reservas cuando el backend llama al proxy.
+ * - Consumir mensajes de Kafka de la cátedra (eventos / asientos).
+ * - Publicar mensajes de reservas cuando el backend llama al proxy.
  *
- *  NOTA: Usamos un cache en memoria para eventos, rellenado con los
- *  mensajes que llegan por Kafka. Si el formato real cambia, solo
- *  hay que ajustar el mapeo en parsearEvento().
+ * NOTA: Usamos un cache en memoria para eventos, rellenado con los
+ * mensajes que llegan por Kafka. Si el formato real cambia, solo
+ * hay que ajustar el mapeo en parsearEvento().
  */
 @Service
 public class KafkaEventosService {
@@ -44,12 +44,11 @@ public class KafkaEventosService {
     private final Map<Long, EventoProxyDTO> eventosCache = new ConcurrentHashMap<>();
 
     public KafkaEventosService(
-        KafkaTemplate<String, String> kafkaTemplate,
-        ObjectMapper objectMapper,
-        @Value("${app.kafka.topic.eventos}") String topicEventos,
-        @Value("${app.kafka.topic.asientos}") String topicAsientos,
-        @Value("${app.kafka.topic.reservas}") String topicReservas
-    ) {
+            KafkaTemplate<String, String> kafkaTemplate,
+            ObjectMapper objectMapper,
+            @Value("${app.kafka.topic.eventos}") String topicEventos,
+            @Value("${app.kafka.topic.asientos}") String topicAsientos,
+            @Value("${app.kafka.topic.reservas}") String topicReservas) {
         this.kafkaTemplate = kafkaTemplate;
         this.objectMapper = objectMapper;
         this.topicEventos = topicEventos;
@@ -61,10 +60,7 @@ public class KafkaEventosService {
     // CONSUMERS
     // ==========================
 
-    @KafkaListener(
-        topics = "#{__listener.topicEventos}",
-        containerFactory = "kafkaListenerContainerFactory"
-    )
+    @KafkaListener(topics = "#{__listener.topicEventos}", containerFactory = "kafkaListenerContainerFactory")
     public void onEventoMessage(String message) {
         log.info("[KAFKA] Mensaje de eventos recibido: {}", message);
         try {
@@ -78,10 +74,7 @@ public class KafkaEventosService {
         }
     }
 
-    @KafkaListener(
-        topics = "#{__listener.topicAsientos}",
-        containerFactory = "kafkaListenerContainerFactory"
-    )
+    @KafkaListener(topics = "#{__listener.topicAsientos}", containerFactory = "kafkaListenerContainerFactory")
     public void onAsientosMessage(String message) {
         // Por ahora solo lo registramos. Más adelante se podría
         // utilizar para invalidar caches o disparar notificaciones.
@@ -97,9 +90,12 @@ public class KafkaEventosService {
             String payload = objectMapper.writeValueAsString(reserva);
             log.info("[KAFKA] Publicando reserva en topic {}: {}", topicReservas, payload);
             kafkaTemplate.send(topicReservas, payload);
-        } catch (JsonProcessingException e) {
-            log.error("[KAFKA] Error serializando reserva para enviar a Kafka", e);
-            throw new IllegalStateException("No se pudo publicar la reserva en Kafka", e);
+            // No bloqueamos ni esperamos el resultado: para el TP alcanza con
+            // intentar publicarlo y registrar cualquier error.
+        } catch (Exception e) { // JsonProcessingException u otros errores de Kafka
+            log.error("[KAFKA] Error al publicar la reserva en Kafka", e);
+            // IMPORTANTE: no re-lanzamos la excepción para no devolver 500
+            // en el endpoint del proxy. El controlador seguirá respondiendo 202.
         }
     }
 
@@ -122,7 +118,8 @@ public class KafkaEventosService {
     /**
      * Intenta mapear el JSON del mensaje de Kafka al EventoProxyDTO,
      * suponiendo un formato similar a los payloads de eventos de la cátedra
-     * (titulo, resumen, fecha, precioEntrada, id, etc.). :contentReference[oaicite:1]{index=1}
+     * (titulo, resumen, fecha, precioEntrada, id, etc.).
+     * :contentReference[oaicite:1]{index=1}
      */
     private EventoProxyDTO parsearEvento(String message) throws JsonProcessingException {
         JsonNode root = objectMapper.readTree(message);
