@@ -1,5 +1,4 @@
 package com.mycompany.myapp.service.client;
-
 import com.mycompany.myapp.service.dto.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -7,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+// Conecta el back con el proxy y el proxy se comunica con el servicio de la catedra
 @Service
 public class ProxyClient {
     private final WebClient proxyWebClient;
@@ -19,55 +18,53 @@ public class ProxyClient {
 
     public String registrar(String body) {
         return proxyWebClient.post()
-            .uri("/proxy/registrar")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .bodyValue(body)
-            .retrieve()
-            .bodyToMono(String.class)
-            .block();
+                .uri("/proxy/registrar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 
-    public EventoCatedraDTO getEventobyId(String id) {
+    public EventoExternoDTO conseguirEventoPorId(String eventoId) {
         return proxyWebClient.get()
-            .uri("/proxy/eventos/{id}", id)
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToMono(EventoCatedraDTO.class)
-            .block();
+                .uri("/proxy/eventos/{id}", eventoId)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(EventoExternoDTO.class)
+                .block();
     }
-
-    public List<EventoCatedraDTO> getEventos() {
+    public List<EventoResumidoDTO> conseguirEventosResumidos() {
         return proxyWebClient.get()
-            .uri("/proxy/eventos")
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToFlux(EventoCatedraDTO.class)
-            .collectList()
-            .block();
+                .uri("/proxy/eventos-resumidos")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(EventoResumidoDTO.class)
+                .collectList()
+                .block();
     }
 
-    public List<EventoResumidoDTO> getEventosResumidos() {
+
+    public List<EventoExternoDTO> conseguirEventos() {
         return proxyWebClient.get()
-            .uri("/proxy/eventos-resumidos")
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToFlux(EventoResumidoDTO.class)
-            .collectList()
-            .block();
+                .uri("/proxy/eventos")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(EventoExternoDTO.class)
+                .collectList()
+                .block();
     }
-
-    public BloqueoAsientosResponse bloqueoAsiento(BloqueoAsientosRequest request) {
+    public BloquearAsientosDTO bloquearAsientos( BloquearAsientosDTO dto) {
         return proxyWebClient.post()
-            .uri("/proxy/bloquear-asientos")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .bodyValue(request)
-            .retrieve()
-            .bodyToMono(BloqueoAsientosResponse.class)
-            .block();
+                .uri("/proxy/bloquear-asientos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(dto)
+                .retrieve()
+                .bodyToMono(BloquearAsientosDTO.class)
+                .block();
     }
-
     public AsientosRedisDTO getAsientosEvento(Long eventoId) {
         return proxyWebClient.get()
             .uri("/proxy/asientos/evento/{eventoId}", eventoId)
@@ -77,12 +74,12 @@ public class ProxyClient {
             .block();
     }
 
-    public List<AsientosProxyCompletosDTO> getAsientosNoDisponibles(Long eventoId){
+    public List<AsientosCompletoDTO> getAsientosNoDisponibles(Long eventoId){
         return proxyWebClient.get()
             .uri("/proxy/asientos/evento/{eventoId}/no-disponibles", eventoId)
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
-            .bodyToFlux(AsientosProxyCompletosDTO.class)
+            .bodyToFlux(AsientosCompletoDTO.class)
             .collectList()
             .block();
     }
@@ -115,37 +112,6 @@ public class ProxyClient {
             .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
             .block();
     }
-
-    public VentaAsientosResponse realizarVenta(VentaAsientosRequest request) {
-        return proxyWebClient.post()
-            .uri("/proxy/realizar-venta")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .bodyValue(request)
-            .retrieve()
-            .bodyToMono(VentaAsientosResponse.class)
-            .block();
-    }
-
-    public List<VentaAsientosResponse> listarVentas() {
-        return proxyWebClient.get()
-            .uri("/proxy/listar-ventas")
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToFlux(VentaAsientosResponse.class)
-            .collectList()
-            .block();
-    }
-
-    public VentaAsientosResponse listarVentaPorId(Long id) {
-        return proxyWebClient.get()
-            .uri("/proxy/listar-ventas/{id}", id)
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToMono(VentaAsientosResponse.class)
-            .block();
-    }
-
     public Set<String> getAllKeys() {
         return new HashSet<>(Objects.requireNonNull(proxyWebClient.get()
             .uri("/proxy/asientos/debug/keys")
@@ -165,7 +131,14 @@ public class ProxyClient {
             .block();
     }
 
-
-
-
+    public VentaAsientosResponse realizarVenta(VentaAsientosRequest request) {
+        return proxyWebClient.post()
+            .uri("/proxy/venta")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .bodyValue(request)
+            .retrieve()
+            .bodyToMono(VentaAsientosResponse.class)
+            .block();
+    }
 }

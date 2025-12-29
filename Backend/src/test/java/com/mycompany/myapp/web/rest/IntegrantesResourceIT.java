@@ -286,6 +286,8 @@ class IntegrantesResourceIT {
         Integrantes partialUpdatedIntegrantes = new Integrantes();
         partialUpdatedIntegrantes.setId(integrantes.getId());
 
+        partialUpdatedIntegrantes.nombre(UPDATED_NOMBRE).identificacion(UPDATED_IDENTIFICACION);
+
         restIntegrantesMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedIntegrantes.getId())

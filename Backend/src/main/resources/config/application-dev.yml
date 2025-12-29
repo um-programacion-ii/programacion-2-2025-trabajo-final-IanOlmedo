@@ -19,8 +19,6 @@ logging:
     tech.jhipster: DEBUG
     org.hibernate.SQL: DEBUG
     com.mycompany.myapp: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.web: DEBUG
 
 spring:
   jpa:
@@ -46,7 +44,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/yourdb;MODE=LEGACY;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:file:./target/h2db/db/yourdb2;MODE=LEGACY;DB_CLOSE_DELAY=-1
     username: backend
     password:
     hikari:
@@ -72,7 +70,6 @@ spring:
 
 server:
   port: 8081
-  address: 0.0.0.0
   # make sure requests the proxy uri instead of the server one
   forward-headers-strategy: native
 
@@ -93,7 +90,7 @@ jhipster:
   # CORS is only enabled by default with the "dev" profile
   cors:
     # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
-    allowed-origins: '*'
+    allowed-origins: 'http://localhost:8100,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:4200,https://localhost:4200'
     # Enable CORS when running in GitHub Codespaces
     allowed-origin-patterns: 'https://*.githubpreview.dev'
     allowed-methods: '*'
@@ -105,7 +102,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: M2FmZTY3MTc3YTMzN2Q4YjJjNmMzYzcwNDdjNTU0NDI0MjczYTI2ZjY0NmNlMzQwOThlMzQwNDc0ZjZiZWZkYmRjMzQ3MWJhNThmZGZmNTQ2MTFlZjdhY2E1ZWFlZmRkMDVjMWE5NjMxZTZhNTIwYzAwNDZlNTRhYWJhZTE2MzI=
+        base64-secret: NzdiYWQ4OTIyYjEzMDUyYzhiNmVhNDk4MzViNzdkYjBiZjEwMmJjZDI2ZGNlNWYxY2JiOTI4YjEyYjJjNjcyYzEzOWFmYTRiNjc3MzA5OWUxMDUxY2FiZjBmNmI1ODgzZjFlZWU4N2Y5MTI4NzMzMmEyN2QzYmU4OTQ0NTJjNDU=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400000
         token-validity-in-seconds-for-remember-me: 2592000
@@ -118,7 +115,6 @@ jhipster:
       host: localhost
       port: 5000
       ring-buffer-size: 512
-
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -129,7 +125,6 @@ jhipster:
 # ===================================================================
 
 # application:
-
 app:
   redis:
     channel:

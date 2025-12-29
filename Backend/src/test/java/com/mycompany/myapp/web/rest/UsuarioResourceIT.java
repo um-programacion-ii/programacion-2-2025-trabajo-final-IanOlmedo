@@ -63,6 +63,9 @@ class UsuarioResourceIT {
     private static final LocalDate DEFAULT_FECHA_REGISTRO = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_FECHA_REGISTRO = LocalDate.now(ZoneId.systemDefault());
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/usuarios";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -104,7 +107,8 @@ class UsuarioResourceIT {
             .nombreAlumno(DEFAULT_NOMBRE_ALUMNO)
             .descripcionProyecto(DEFAULT_DESCRIPCION_PROYECTO)
             .jwtToken(DEFAULT_JWT_TOKEN)
-            .fechaRegistro(DEFAULT_FECHA_REGISTRO);
+            .fechaRegistro(DEFAULT_FECHA_REGISTRO)
+            .name(DEFAULT_NAME);
     }
 
     /**
@@ -123,7 +127,8 @@ class UsuarioResourceIT {
             .nombreAlumno(UPDATED_NOMBRE_ALUMNO)
             .descripcionProyecto(UPDATED_DESCRIPCION_PROYECTO)
             .jwtToken(UPDATED_JWT_TOKEN)
-            .fechaRegistro(UPDATED_FECHA_REGISTRO);
+            .fechaRegistro(UPDATED_FECHA_REGISTRO)
+            .name(UPDATED_NAME);
     }
 
     @BeforeEach
@@ -201,7 +206,8 @@ class UsuarioResourceIT {
             .andExpect(jsonPath("$.[*].nombreAlumno").value(hasItem(DEFAULT_NOMBRE_ALUMNO)))
             .andExpect(jsonPath("$.[*].descripcionProyecto").value(hasItem(DEFAULT_DESCRIPCION_PROYECTO)))
             .andExpect(jsonPath("$.[*].jwtToken").value(hasItem(DEFAULT_JWT_TOKEN)))
-            .andExpect(jsonPath("$.[*].fechaRegistro").value(hasItem(DEFAULT_FECHA_REGISTRO.toString())));
+            .andExpect(jsonPath("$.[*].fechaRegistro").value(hasItem(DEFAULT_FECHA_REGISTRO.toString())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
 
     @Test
@@ -224,7 +230,8 @@ class UsuarioResourceIT {
             .andExpect(jsonPath("$.nombreAlumno").value(DEFAULT_NOMBRE_ALUMNO))
             .andExpect(jsonPath("$.descripcionProyecto").value(DEFAULT_DESCRIPCION_PROYECTO))
             .andExpect(jsonPath("$.jwtToken").value(DEFAULT_JWT_TOKEN))
-            .andExpect(jsonPath("$.fechaRegistro").value(DEFAULT_FECHA_REGISTRO.toString()));
+            .andExpect(jsonPath("$.fechaRegistro").value(DEFAULT_FECHA_REGISTRO.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
     }
 
     @Test
@@ -255,7 +262,8 @@ class UsuarioResourceIT {
             .nombreAlumno(UPDATED_NOMBRE_ALUMNO)
             .descripcionProyecto(UPDATED_DESCRIPCION_PROYECTO)
             .jwtToken(UPDATED_JWT_TOKEN)
-            .fechaRegistro(UPDATED_FECHA_REGISTRO);
+            .fechaRegistro(UPDATED_FECHA_REGISTRO)
+            .name(UPDATED_NAME);
         UsuarioDTO usuarioDTO = usuarioMapper.toDto(updatedUsuario);
 
         restUsuarioMockMvc
@@ -342,10 +350,13 @@ class UsuarioResourceIT {
         partialUpdatedUsuario.setId(usuario.getId());
 
         partialUpdatedUsuario
+            .username(UPDATED_USERNAME)
             .password(UPDATED_PASSWORD)
-            .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
-            .nombreAlumno(UPDATED_NOMBRE_ALUMNO);
+            .email(UPDATED_EMAIL)
+            .nombreAlumno(UPDATED_NOMBRE_ALUMNO)
+            .descripcionProyecto(UPDATED_DESCRIPCION_PROYECTO)
+            .name(UPDATED_NAME);
 
         restUsuarioMockMvc
             .perform(
@@ -382,7 +393,8 @@ class UsuarioResourceIT {
             .nombreAlumno(UPDATED_NOMBRE_ALUMNO)
             .descripcionProyecto(UPDATED_DESCRIPCION_PROYECTO)
             .jwtToken(UPDATED_JWT_TOKEN)
-            .fechaRegistro(UPDATED_FECHA_REGISTRO);
+            .fechaRegistro(UPDATED_FECHA_REGISTRO)
+            .name(UPDATED_NAME);
 
         restUsuarioMockMvc
             .perform(

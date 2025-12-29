@@ -19,7 +19,8 @@ public class UsuarioTestSamples {
             .email("email1")
             .nombreAlumno("nombreAlumno1")
             .descripcionProyecto("descripcionProyecto1")
-            .jwtToken("jwtToken1");
+            .jwtToken("jwtToken1")
+            .name("name1");
     }
 
     public static Usuario getUsuarioSample2() {
@@ -32,7 +33,8 @@ public class UsuarioTestSamples {
             .email("email2")
             .nombreAlumno("nombreAlumno2")
             .descripcionProyecto("descripcionProyecto2")
-            .jwtToken("jwtToken2");
+            .jwtToken("jwtToken2")
+            .name("name2");
     }
 
     public static Usuario getUsuarioRandomSampleGenerator() {
@@ -45,6 +47,7 @@ public class UsuarioTestSamples {
             .email(UUID.randomUUID().toString())
             .nombreAlumno(UUID.randomUUID().toString())
             .descripcionProyecto(UUID.randomUUID().toString())
-            .jwtToken(UUID.randomUUID().toString());
+            .jwtToken(UUID.randomUUID().toString())
+            .name(UUID.randomUUID().toString());
     }
 }

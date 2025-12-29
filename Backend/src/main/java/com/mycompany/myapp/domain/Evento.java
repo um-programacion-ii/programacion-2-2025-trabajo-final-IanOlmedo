@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -60,7 +61,7 @@ public class Evento implements Serializable {
     private String estado;
 
     @Column(name = "ultima_actualizacion")
-    private Instant ultimaActualizacion;
+    private LocalDate ultimaActualizacion;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "evento")
     @JsonIgnoreProperties(value = { "evento" }, allowSetters = true)
@@ -241,16 +242,16 @@ public class Evento implements Serializable {
         this.estado = estado;
     }
 
-    public Instant getUltimaActualizacion() {
+    public LocalDate getUltimaActualizacion() {
         return this.ultimaActualizacion;
     }
 
-    public Evento ultimaActualizacion(Instant ultimaActualizacion) {
+    public Evento ultimaActualizacion(LocalDate ultimaActualizacion) {
         this.setUltimaActualizacion(ultimaActualizacion);
         return this;
     }
 
-    public void setUltimaActualizacion(Instant ultimaActualizacion) {
+    public void setUltimaActualizacion(LocalDate ultimaActualizacion) {
         this.ultimaActualizacion = ultimaActualizacion;
     }
 

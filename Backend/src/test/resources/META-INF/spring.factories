@@ -1,4 +1,5 @@
 org.springframework.test.context.ContextCustomizerFactory = \
     com.mycompany.myapp.config.\
     SqlTestContainersSpringContextCustomizerFactory,com.mycompany.myapp.config.\
-    RedisTestContainersSpringContextCustomizerFactory
+    RedisTestContainersSpringContextCustomizerFactory,com.mycompany.myapp.\
+    config.KafkaTestContainersSpringContextCustomizerFactory

@@ -44,12 +44,12 @@ public class AccountResource {
     private final MailService mailService;
 
     private final SesionServiceImpl sesionService;
-
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, SesionServiceImpl sesionService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService,SesionServiceImpl sesionService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.sesionService = sesionService;
+
     }
 
     /**
@@ -67,7 +67,8 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        user.setActivated(true);
+        userRepository.save(user);
     }
 
     /**
@@ -183,11 +184,11 @@ public class AccountResource {
             password.length() > ManagedUserVM.PASSWORD_MAX_LENGTH
         );
     }
-
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         String token = request.getHeader("X-Session-Token");
         sesionService.logout(token);
         return ResponseEntity.ok().build();
     }
+
 }

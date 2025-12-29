@@ -45,9 +45,6 @@ class SesionResourceIT {
     private static final Long DEFAULT_EVENTO_SELECCIONADO = 1L;
     private static final Long UPDATED_EVENTO_SELECCIONADO = 2L;
 
-    private static final String DEFAULT_ASIENTOS_SELECCIONADOS = "AAAAAAAAAA";
-    private static final String UPDATED_ASIENTOS_SELECCIONADOS = "BBBBBBBBBB";
-
     private static final LocalDate DEFAULT_ULTIMA_ACTIVIDAD = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_ULTIMA_ACTIVIDAD = LocalDate.now(ZoneId.systemDefault());
 
@@ -90,7 +87,6 @@ class SesionResourceIT {
             .token(DEFAULT_TOKEN)
             .estadoFlujo(DEFAULT_ESTADO_FLUJO)
             .eventoSeleccionado(DEFAULT_EVENTO_SELECCIONADO)
-            .asientosSeleccionados(DEFAULT_ASIENTOS_SELECCIONADOS)
             .ultimaActividad(DEFAULT_ULTIMA_ACTIVIDAD)
             .expiraEn(DEFAULT_EXPIRA_EN);
     }
@@ -106,7 +102,6 @@ class SesionResourceIT {
             .token(UPDATED_TOKEN)
             .estadoFlujo(UPDATED_ESTADO_FLUJO)
             .eventoSeleccionado(UPDATED_EVENTO_SELECCIONADO)
-            .asientosSeleccionados(UPDATED_ASIENTOS_SELECCIONADOS)
             .ultimaActividad(UPDATED_ULTIMA_ACTIVIDAD)
             .expiraEn(UPDATED_EXPIRA_EN);
     }
@@ -181,7 +176,6 @@ class SesionResourceIT {
             .andExpect(jsonPath("$.[*].token").value(hasItem(DEFAULT_TOKEN)))
             .andExpect(jsonPath("$.[*].estadoFlujo").value(hasItem(DEFAULT_ESTADO_FLUJO)))
             .andExpect(jsonPath("$.[*].eventoSeleccionado").value(hasItem(DEFAULT_EVENTO_SELECCIONADO.intValue())))
-            .andExpect(jsonPath("$.[*].asientosSeleccionados").value(hasItem(DEFAULT_ASIENTOS_SELECCIONADOS)))
             .andExpect(jsonPath("$.[*].ultimaActividad").value(hasItem(DEFAULT_ULTIMA_ACTIVIDAD.toString())))
             .andExpect(jsonPath("$.[*].expiraEn").value(hasItem(DEFAULT_EXPIRA_EN.toString())));
     }
@@ -201,7 +195,6 @@ class SesionResourceIT {
             .andExpect(jsonPath("$.token").value(DEFAULT_TOKEN))
             .andExpect(jsonPath("$.estadoFlujo").value(DEFAULT_ESTADO_FLUJO))
             .andExpect(jsonPath("$.eventoSeleccionado").value(DEFAULT_EVENTO_SELECCIONADO.intValue()))
-            .andExpect(jsonPath("$.asientosSeleccionados").value(DEFAULT_ASIENTOS_SELECCIONADOS))
             .andExpect(jsonPath("$.ultimaActividad").value(DEFAULT_ULTIMA_ACTIVIDAD.toString()))
             .andExpect(jsonPath("$.expiraEn").value(DEFAULT_EXPIRA_EN.toString()));
     }
@@ -229,7 +222,6 @@ class SesionResourceIT {
             .token(UPDATED_TOKEN)
             .estadoFlujo(UPDATED_ESTADO_FLUJO)
             .eventoSeleccionado(UPDATED_EVENTO_SELECCIONADO)
-            .asientosSeleccionados(UPDATED_ASIENTOS_SELECCIONADOS)
             .ultimaActividad(UPDATED_ULTIMA_ACTIVIDAD)
             .expiraEn(UPDATED_EXPIRA_EN);
         SesionDTO sesionDTO = sesionMapper.toDto(updatedSesion);
@@ -317,11 +309,7 @@ class SesionResourceIT {
         Sesion partialUpdatedSesion = new Sesion();
         partialUpdatedSesion.setId(sesion.getId());
 
-        partialUpdatedSesion
-            .token(UPDATED_TOKEN)
-            .estadoFlujo(UPDATED_ESTADO_FLUJO)
-            .eventoSeleccionado(UPDATED_EVENTO_SELECCIONADO)
-            .asientosSeleccionados(UPDATED_ASIENTOS_SELECCIONADOS);
+        partialUpdatedSesion.estadoFlujo(UPDATED_ESTADO_FLUJO).ultimaActividad(UPDATED_ULTIMA_ACTIVIDAD);
 
         restSesionMockMvc
             .perform(
@@ -353,7 +341,6 @@ class SesionResourceIT {
             .token(UPDATED_TOKEN)
             .estadoFlujo(UPDATED_ESTADO_FLUJO)
             .eventoSeleccionado(UPDATED_EVENTO_SELECCIONADO)
-            .asientosSeleccionados(UPDATED_ASIENTOS_SELECCIONADOS)
             .ultimaActividad(UPDATED_ULTIMA_ACTIVIDAD)
             .expiraEn(UPDATED_EXPIRA_EN);
 

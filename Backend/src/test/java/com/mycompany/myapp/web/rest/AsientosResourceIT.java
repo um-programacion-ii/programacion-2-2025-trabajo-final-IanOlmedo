@@ -291,7 +291,7 @@ class AsientosResourceIT {
         Asientos partialUpdatedAsientos = new Asientos();
         partialUpdatedAsientos.setId(asientos.getId());
 
-        partialUpdatedAsientos.fila(UPDATED_FILA);
+        partialUpdatedAsientos.fila(UPDATED_FILA).persona(UPDATED_PERSONA).estado(UPDATED_ESTADO);
 
         restAsientosMockMvc
             .perform(

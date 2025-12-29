@@ -1,4 +1,0 @@
-2025-12-27 18:54:03.618829-03:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "DATABASECHANGELOGLOCK" no encontrada
-Table "DATABASECHANGELOGLOCK" not found; SQL statement:
-SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK [42102-232]

@@ -14,7 +14,10 @@ import com.mycompany.myapp.repository.EventoRepository;
 import com.mycompany.myapp.service.dto.EventoDTO;
 import com.mycompany.myapp.service.mapper.EventoMapper;
 import jakarta.persistence.EntityManager;
+
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -45,8 +48,12 @@ class EventoResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_FECHA = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_FECHA = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant DEFAULT_FECHA =
+        Instant.ofEpochMilli(0L);
+
+    private static final Instant UPDATED_FECHA =
+        Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
 
     private static final String DEFAULT_DIRECCION = "AAAAAAAAAA";
     private static final String UPDATED_DIRECCION = "BBBBBBBBBB";
@@ -72,8 +79,8 @@ class EventoResourceIT {
     private static final String DEFAULT_ESTADO = "AAAAAAAAAA";
     private static final String UPDATED_ESTADO = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_ULTIMA_ACTUALIZACION = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_ULTIMA_ACTUALIZACION = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_ULTIMA_ACTUALIZACION = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_ULTIMA_ACTUALIZACION = LocalDate.now(ZoneId.systemDefault());
 
     private static final String ENTITY_API_URL = "/api/eventos";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -374,10 +381,11 @@ class EventoResourceIT {
         partialUpdatedEvento.setId(evento.getId());
 
         partialUpdatedEvento
+            .resumen(UPDATED_RESUMEN)
             .descripcion(UPDATED_DESCRIPCION)
-            .imagen(UPDATED_IMAGEN)
+            .direccion(UPDATED_DIRECCION)
+            .filaAsientos(UPDATED_FILA_ASIENTOS)
             .columnaAsientos(UPDATED_COLUMNA_ASIENTOS)
-            .precioEntrada(UPDATED_PRECIO_ENTRADA)
             .eventoTipoNombre(UPDATED_EVENTO_TIPO_NOMBRE)
             .estado(UPDATED_ESTADO);
 

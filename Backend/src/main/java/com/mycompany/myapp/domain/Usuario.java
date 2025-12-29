@@ -47,6 +47,9 @@ public class Usuario implements Serializable {
     @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
 
+    @Column(name = "name")
+    private String name;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -179,6 +182,19 @@ public class Usuario implements Serializable {
         this.fechaRegistro = fechaRegistro;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public Usuario name(String name) {
+        this.setName(name);
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -212,6 +228,7 @@ public class Usuario implements Serializable {
             ", descripcionProyecto='" + getDescripcionProyecto() + "'" +
             ", jwtToken='" + getJwtToken() + "'" +
             ", fechaRegistro='" + getFechaRegistro() + "'" +
+            ", name='" + getName() + "'" +
             "}";
     }
 }

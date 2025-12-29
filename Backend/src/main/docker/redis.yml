@@ -2,7 +2,7 @@
 name: backend
 services:
   redis:
-    image: redis:7.4.2
+    image: redis:8.0.0
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:

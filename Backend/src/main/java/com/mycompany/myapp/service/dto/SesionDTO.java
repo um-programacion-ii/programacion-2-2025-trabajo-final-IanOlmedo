@@ -18,8 +18,6 @@ public class SesionDTO implements Serializable {
 
     private Long eventoSeleccionado;
 
-    private String asientosSeleccionados;
-
     private LocalDate ultimaActividad;
 
     private LocalDate expiraEn;
@@ -54,14 +52,6 @@ public class SesionDTO implements Serializable {
 
     public void setEventoSeleccionado(Long eventoSeleccionado) {
         this.eventoSeleccionado = eventoSeleccionado;
-    }
-
-    public String getAsientosSeleccionados() {
-        return asientosSeleccionados;
-    }
-
-    public void setAsientosSeleccionados(String asientosSeleccionados) {
-        this.asientosSeleccionados = asientosSeleccionados;
     }
 
     public LocalDate getUltimaActividad() {
@@ -109,7 +99,6 @@ public class SesionDTO implements Serializable {
             ", token='" + getToken() + "'" +
             ", estadoFlujo='" + getEstadoFlujo() + "'" +
             ", eventoSeleccionado=" + getEventoSeleccionado() +
-            ", asientosSeleccionados='" + getAsientosSeleccionados() + "'" +
             ", ultimaActividad='" + getUltimaActividad() + "'" +
             ", expiraEn='" + getExpiraEn() + "'" +
             "}";

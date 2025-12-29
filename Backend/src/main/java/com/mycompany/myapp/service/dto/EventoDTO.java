@@ -1,11 +1,11 @@
 package com.mycompany.myapp.service.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -41,7 +41,7 @@ public class EventoDTO implements Serializable {
 
     private String estado;
 
-    private Instant ultimaActualizacion;
+    private LocalDate ultimaActualizacion;
 
 
     @Override
@@ -79,8 +79,7 @@ public class EventoDTO implements Serializable {
             ", filaAsientos=" + getFilaAsientos() +
             ", columnaAsientos=" + getColumnAsientos() +
             ", precioEntrada=" + getPrecioEntrada() +
-            ", eventoTipoNombre='" + getEventoTipo().getNombre() + "'" +
-            ", eventoTipoDescripcion='" + getEventoTipo().getDescripcion() + "'" +
+            ", eventoTipoNombre='" + getEventoTipo() + "'" +
             ", estado='" + getEstado() + "'" +
             ", ultimaActualizacion='" + getUltimaActualizacion() + "'" +
             "}";

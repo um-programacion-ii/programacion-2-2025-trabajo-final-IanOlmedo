@@ -1,6 +1,6 @@
 {
   "annotations": {
-    "changelogDate": "20251111190146"
+    "changelogDate": "20251112213120"
   },
   "dto": "mapstruct",
   "fields": [
@@ -39,6 +39,10 @@
     {
       "fieldName": "fechaRegistro",
       "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
     }
   ],
   "jpaMetamodelFiltering": false,

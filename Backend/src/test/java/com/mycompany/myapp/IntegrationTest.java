@@ -1,6 +1,7 @@
 package com.mycompany.myapp;
 
 import com.mycompany.myapp.config.AsyncSyncConfiguration;
+import com.mycompany.myapp.config.EmbeddedKafka;
 import com.mycompany.myapp.config.EmbeddedRedis;
 import com.mycompany.myapp.config.EmbeddedSQL;
 import com.mycompany.myapp.config.JacksonConfiguration;
@@ -18,5 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = { BackendApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class })
 @EmbeddedRedis
 @EmbeddedSQL
+@EmbeddedKafka
 public @interface IntegrationTest {
 }

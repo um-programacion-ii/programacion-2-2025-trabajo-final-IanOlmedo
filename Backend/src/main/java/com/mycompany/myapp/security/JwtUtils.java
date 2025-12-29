@@ -1,6 +1,4 @@
 package com.mycompany.myapp.security;
-
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,10 +7,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
@@ -42,6 +37,7 @@ public class JwtUtils {
             log.info("Inicializando JwtUtils con secreto Base64");
             byte[] keyBytes = Base64.getDecoder().decode(base64Secret);
             this.key = Keys.hmacShaKeyFor(keyBytes);
+
             log.info("JwtUtils inicializado correctamente");
         } catch (IllegalArgumentException e) {
             log.error("ERROR: El secreto Base64 no es válido: {}", e.getMessage());
@@ -65,7 +61,7 @@ public class JwtUtils {
      * Obtiene la clave secreta para validar el token
      */
     private SecretKey getSigningKey() {
-        return key;
+       return key;
     }
 
     /**

@@ -51,9 +51,6 @@ public class SesionAsserts {
             .satisfies(a -> assertThat(a.getEstadoFlujo()).as("check estadoFlujo").isEqualTo(expected.getEstadoFlujo()))
             .satisfies(a -> assertThat(a.getEventoSeleccionado()).as("check eventoSeleccionado").isEqualTo(expected.getEventoSeleccionado())
             )
-            .satisfies(a ->
-                assertThat(a.getAsientosSeleccionados()).as("check asientosSeleccionados").isEqualTo(expected.getAsientosSeleccionados())
-            )
             .satisfies(a -> assertThat(a.getUltimaActividad()).as("check ultimaActividad").isEqualTo(expected.getUltimaActividad()))
             .satisfies(a -> assertThat(a.getExpiraEn()).as("check expiraEn").isEqualTo(expected.getExpiraEn()));
     }

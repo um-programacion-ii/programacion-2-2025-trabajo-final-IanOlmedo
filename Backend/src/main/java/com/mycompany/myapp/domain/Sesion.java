@@ -32,9 +32,6 @@ public class Sesion implements Serializable {
     @Column(name = "evento_seleccionado")
     private Long eventoSeleccionado;
 
-    @Column(name = "asientos_seleccionados")
-    private String asientosSeleccionados;
-
     @Column(name = "ultima_actividad")
     private LocalDate ultimaActividad;
 
@@ -97,19 +94,6 @@ public class Sesion implements Serializable {
 
     public void setEventoSeleccionado(Long eventoSeleccionado) {
         this.eventoSeleccionado = eventoSeleccionado;
-    }
-
-    public String getAsientosSeleccionados() {
-        return this.asientosSeleccionados;
-    }
-
-    public Sesion asientosSeleccionados(String asientosSeleccionados) {
-        this.setAsientosSeleccionados(asientosSeleccionados);
-        return this;
-    }
-
-    public void setAsientosSeleccionados(String asientosSeleccionados) {
-        this.asientosSeleccionados = asientosSeleccionados;
     }
 
     public LocalDate getUltimaActividad() {
@@ -196,7 +180,6 @@ public class Sesion implements Serializable {
             ", token='" + getToken() + "'" +
             ", estadoFlujo='" + getEstadoFlujo() + "'" +
             ", eventoSeleccionado=" + getEventoSeleccionado() +
-            ", asientosSeleccionados='" + getAsientosSeleccionados() + "'" +
             ", ultimaActividad='" + getUltimaActividad() + "'" +
             ", expiraEn='" + getExpiraEn() + "'" +
             "}";

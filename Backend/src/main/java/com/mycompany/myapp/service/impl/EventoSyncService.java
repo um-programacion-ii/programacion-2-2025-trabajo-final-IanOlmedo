@@ -1,24 +1,20 @@
 package com.mycompany.myapp.service.impl;
-
 import com.mycompany.myapp.domain.Asientos;
 import com.mycompany.myapp.domain.Evento;
 import com.mycompany.myapp.repository.AsientosRepository;
 import com.mycompany.myapp.repository.EventoRepository;
 import com.mycompany.myapp.service.client.ProxyClient;
-import com.mycompany.myapp.service.dto.AsientosProxyCompletosDTO;
-import com.mycompany.myapp.service.dto.EventoCatedraDTO;
-import com.mycompany.myapp.service.dto.EventoDTO;
+import com.mycompany.myapp.service.dto.AsientosCompletoDTO;
+import com.mycompany.myapp.service.dto.EventoExternoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
 
 @Service
 @Slf4j
@@ -39,12 +35,12 @@ public class EventoSyncService {
 
         try {
             // Obtener todos los eventos desde la cátedra
-            List<EventoCatedraDTO> eventosActualizados = proxyClient.getEventos();
+            List<EventoExternoDTO> eventosActualizados = proxyClient.conseguirEventos();
 
             log.info("Se obtuvieron {} eventos de la cátedra", eventosActualizados.size());
 
             // Actualizar o crear eventos en la BD local
-            for (EventoCatedraDTO eventoDTO : eventosActualizados) {
+            for (EventoExternoDTO eventoDTO : eventosActualizados) {
                 sincronizarEvento(eventoDTO);
             }
 
@@ -61,7 +57,7 @@ public class EventoSyncService {
     /**
      * Sincroniza un evento individual
      */
-    private void sincronizarEvento(EventoCatedraDTO eventoDTO) {
+    private void sincronizarEvento(EventoExternoDTO eventoDTO) {
 
         Evento evento = eventoRepository.findById(eventoDTO.getId())
             .orElse(new Evento());
@@ -77,7 +73,7 @@ public class EventoSyncService {
         evento.setEventoTipoNombre(eventoDTO.getEventoTipo().getNombre());
         evento.setEventoTipoDescripcion(eventoDTO.getEventoTipo().getDescripcion());
         evento.setEstado("ACTIVO");
-        evento.setUltimaActualizacion(Instant.now());
+        evento.setUltimaActualizacion(LocalDate.now());
 
         eventoRepository.save(evento);
 
@@ -87,10 +83,10 @@ public class EventoSyncService {
     /**
      * Marca como eliminados los eventos que ya no existen en la cátedra
      */
-    private void marcarEventosEliminados(List<EventoCatedraDTO> eventosActualizados) {
+    private void marcarEventosEliminados(List<EventoExternoDTO> eventosActualizados) {
         try {
             List<Long> idsActualizados = eventosActualizados.stream()
-                .map(EventoCatedraDTO::getId)
+                .map(EventoExternoDTO::getId)
                 .toList();
 
             List<Evento> eventosLocales = eventoRepository.findByEstado("Activo");

@@ -1,5 +1,4 @@
 package com.mycompany.myapp.service.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AsientosDisponiblesDTO {
+
     private Integer fila;
     private Integer columna;
 }

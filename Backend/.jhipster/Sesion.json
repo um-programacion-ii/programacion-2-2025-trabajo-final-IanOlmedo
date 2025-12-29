@@ -1,6 +1,6 @@
 {
   "annotations": {
-    "changelogDate": "20251111192937"
+    "changelogDate": "20251112215741"
   },
   "dto": "mapstruct",
   "fields": [
@@ -15,10 +15,6 @@
     {
       "fieldName": "eventoSeleccionado",
       "fieldType": "Long"
-    },
-    {
-      "fieldName": "asientosSeleccionados",
-      "fieldType": "String"
     },
     {
       "fieldName": "ultimaActividad",

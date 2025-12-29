@@ -1,6 +1,6 @@
 {
   "annotations": {
-    "changelogDate": "20251111191217"
+    "changelogDate": "20251112214418"
   },
   "dto": "mapstruct",
   "fields": [
@@ -18,7 +18,7 @@
     },
     {
       "fieldName": "fecha",
-      "fieldType": "Instant"
+      "fieldType": "LocalDate"
     },
     {
       "fieldName": "direccion",
@@ -54,7 +54,7 @@
     },
     {
       "fieldName": "ultimaActualizacion",
-      "fieldType": "Instant"
+      "fieldType": "LocalDate"
     }
   ],
   "jpaMetamodelFiltering": false,

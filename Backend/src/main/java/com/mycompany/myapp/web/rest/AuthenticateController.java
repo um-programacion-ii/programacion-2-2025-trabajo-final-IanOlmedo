@@ -1,11 +1,13 @@
 package com.mycompany.myapp.web.rest;
 
-import static com.mycompany.myapp.security.SecurityUtils.AUTHORITIES_KEY;
+import static com.mycompany.myapp.security.SecurityUtils.AUTHORITIES_CLAIM;
 import static com.mycompany.myapp.security.SecurityUtils.JWT_ALGORITHM;
+import static com.mycompany.myapp.security.SecurityUtils.USER_ID_CLAIM;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mycompany.myapp.domain.Sesion;
 import com.mycompany.myapp.domain.User;
+import com.mycompany.myapp.security.DomainUserDetailsService.UserWithId;
 import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.service.impl.SesionServiceImpl;
 import com.mycompany.myapp.web.rest.vm.LoginVM;
@@ -44,23 +46,23 @@ public class AuthenticateController {
 
     private final JwtEncoder jwtEncoder;
 
-    private final SesionServiceImpl sesionService;
-
-    private final UserService userService;
-
     @Value("${jhipster.security.authentication.jwt.token-validity-in-seconds:0}")
     private long tokenValidityInSeconds;
 
     @Value("${jhipster.security.authentication.jwt.token-validity-in-seconds-for-remember-me:0}")
     private long tokenValidityInSecondsForRememberMe;
 
+    private final SesionServiceImpl sesionService;
+
+    private final UserService userService;
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public AuthenticateController(JwtEncoder jwtEncoder, SesionServiceImpl sesionService, UserService userService, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder,SesionServiceImpl sesionService,UserService userService) {
         this.jwtEncoder = jwtEncoder;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.sesionService = sesionService;
         this.userService = userService;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
     @PostMapping("/authenticate")
@@ -70,23 +72,18 @@ public class AuthenticateController {
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = this.createToken(authentication, loginVM.isRememberMe());
-
         User user = userService.getUserWithAuthoritiesByLogin(loginVM.getUsername()).orElseThrow();
-
         Sesion sesion = sesionService.crearSesion(user.getId());
-
         Map<String, Object> body = new HashMap<>();
         body.put("jwt", jwt);
         body.put("sessionToken", sesion.getToken());
         body.put("sessionId", sesion.getId());
-
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwt);
-
         return new ResponseEntity<>(body, headers, HttpStatus.OK);
     }
+
 
     /**
      * {@code GET /authenticate} : check if the user is authenticated.
@@ -112,15 +109,17 @@ public class AuthenticateController {
         }
 
         // @formatter:off
-        JwtClaimsSet claims = JwtClaimsSet.builder()
+        JwtClaimsSet.Builder builder = JwtClaimsSet.builder()
             .issuedAt(now)
             .expiresAt(validity)
             .subject(authentication.getName())
-            .claim(AUTHORITIES_KEY, authorities)
-            .build();
+            .claim(AUTHORITIES_CLAIM, authorities);
+        if (authentication.getPrincipal() instanceof UserWithId user) {
+            builder.claim(USER_ID_CLAIM, user.getId());
+        }
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
-        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, builder.build())).getTokenValue();
     }
 
     /**

@@ -57,7 +57,8 @@ public class UsuarioAsserts {
                 assertThat(a.getDescripcionProyecto()).as("check descripcionProyecto").isEqualTo(expected.getDescripcionProyecto())
             )
             .satisfies(a -> assertThat(a.getJwtToken()).as("check jwtToken").isEqualTo(expected.getJwtToken()))
-            .satisfies(a -> assertThat(a.getFechaRegistro()).as("check fechaRegistro").isEqualTo(expected.getFechaRegistro()));
+            .satisfies(a -> assertThat(a.getFechaRegistro()).as("check fechaRegistro").isEqualTo(expected.getFechaRegistro()))
+            .satisfies(a -> assertThat(a.getName()).as("check name").isEqualTo(expected.getName()));
     }
 
     /**

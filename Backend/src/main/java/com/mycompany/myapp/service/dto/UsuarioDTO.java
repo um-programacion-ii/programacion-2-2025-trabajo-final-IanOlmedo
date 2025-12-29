@@ -30,6 +30,8 @@ public class UsuarioDTO implements Serializable {
 
     private LocalDate fechaRegistro;
 
+    private String name;
+
     public Long getId() {
         return id;
     }
@@ -110,6 +112,14 @@ public class UsuarioDTO implements Serializable {
         this.fechaRegistro = fechaRegistro;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -145,6 +155,7 @@ public class UsuarioDTO implements Serializable {
             ", descripcionProyecto='" + getDescripcionProyecto() + "'" +
             ", jwtToken='" + getJwtToken() + "'" +
             ", fechaRegistro='" + getFechaRegistro() + "'" +
+            ", name='" + getName() + "'" +
             "}";
     }
 }
