@@ -1,0 +1,30 @@
+server:
+  port: 8082
+
+proxy-target:
+  base-url: "http://192.168.194.250:8080/api"
+
+kafka:
+  bootstrap-servers: 192.168.194.250:9092
+  consumer:
+    group-id: reynier
+  topic:
+    eventos: eventos-actualizacion
+  auto-offset-reset: earliest
+  key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+spring:
+  redis:
+    host: 192.168.194.250
+    port: 6379
+    password: ""
+    database: 0
+    timeout: 60000
+
+backend:
+  url: http://localhost:8081
+
+app:
+  jwt:
+    base64-secret: M2FmZTY3MTc3YTMzN2Q4YjJjNmMzYzcwNDdjNTU0NDI0MjczYTI2ZjY0NmNlMzQwOThlMzQwNDc0ZjZiZWZkYmRjMzQ3MWJhNThmZGZmNTQ2MTFlZjdhY2E1ZWFlZmRkMDVjMWE5NjMxZTZhNTIwYzAwNDZlNTRhYWJhZTE2MzI=
+    expiration: 3600000
