@@ -1,4 +1,4 @@
-package org.example.project.interfaz.asientos
+package org.example.project.content.mapaAsientos
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,31 +15,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.example.project.dto.AsientoEstadoDTO
 
 @Composable
 fun Asiento(
     fila: Int,
-    asiento: Pair<Int, String>,
+    asiento: AsientoEstadoDTO,
     size: Dp,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
     val color = when {
-        isSelected -> Color(0xFF007AFF)
-        asiento.second == "DISPONIBLE" -> Color(0xFF4CAF50)
-        asiento.second == "BLOQUEADO" -> Color.Gray
-        asiento.second == "VENDIDO" -> Color(0xFFE53935)
-        else -> Color.DarkGray
+        isSelected -> Color(0xFF2196F3)
+        asiento.estado == "DISPONIBLE" -> Color(0xFF4CAF50)
+        asiento.estado == "BLOQUEADO" -> Color(0xFF9E9E9E)
+        asiento.estado == "VENDIDO" -> Color(0xFFE53935)
+        else -> Color.Gray
     }
 
-    val enabled = asiento.second == "DISPONIBLE"
+    val enabled = asiento.estado == "DISPONIBLE"
 
     Box(
         modifier = Modifier
             .size(size)
-            .background(color.copy(alpha = if (enabled) 0.3f else 0.1f), RoundedCornerShape(4.dp))
+            .background(color.copy(alpha = 0.3f), RoundedCornerShape(4.dp))
             .border(
-                width = 1.dp,
+                width = 2.dp,
                 color = color,
                 shape = RoundedCornerShape(4.dp)
             )
@@ -48,9 +49,13 @@ fun Asiento(
     ) {
         if (size > 25.dp) {
             Text(
-                text = "${asiento.first}",
+                text = "${asiento.columna}",
                 fontSize = (size.value * 0.3f).sp,
-                color = if (isSelected || !enabled) Color.White else color,
+                color = if (isSelected || asiento.estado != "DISPONIBLE") {
+                    Color.White
+                } else {
+                    color.copy(alpha = 0.8f)
+                },
                 fontWeight = FontWeight.Bold
             )
         }

@@ -1,82 +1,81 @@
-package org.example.project.interfaz.asientos
-
-import androidx.compose.foundation.background
+package org.example.project.content.mapaAsientos
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.dto.AsientoDTO
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PanelSeleccionAsientos(
+fun SelectedSeatsPanel(
     selectedSeats: List<AsientoDTO>,
     onConfirm: () -> Unit
 ) {
-    Column(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-            .background(Color.Black.copy(alpha = 0.8f))
-            .padding(16.dp)
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Text(
-            "Asientos Seleccionados:",
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            color = Color.White
-        )
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                "Asientos Seleccionados:",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
 
-        Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
 
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            selectedSeats.forEach { seat ->
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                selectedSeats.forEach { seat ->
+                    AssistChip(
+                        onClick = {},
+                        label = {
+                            Text("Fila ${seat.fila}, Asiento ${seat.columna}")
+                        },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = Color(0xFF2196F3).copy(alpha = 0.2f),
+                            labelColor = Color(0xFF2196F3)
+                        )
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            Button(
+                onClick = onConfirm,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF2196F3)
+                )
+            ) {
                 Text(
-                    text = "F${seat.fila}A${seat.columna}",
-                    modifier = Modifier
-                        .background(Color(0xFF007AFF), RoundedCornerShape(4.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    color = Color.White,
-                    fontSize = 12.sp,
+                    "Continuar con la Compra",
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        Button(
-            onClick = onConfirm,
-            modifier = Modifier.fillMaxWidth().height(48.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF007AFF)
-            ),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(
-                "Continuar",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
         }
     }
 }

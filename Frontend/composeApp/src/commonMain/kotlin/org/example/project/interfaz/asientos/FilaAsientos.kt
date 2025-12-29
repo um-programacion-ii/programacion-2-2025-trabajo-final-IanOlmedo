@@ -1,4 +1,4 @@
-package org.example.project.interfaz.asientos
+package org.example.project.content.mapaAsientos
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,10 +18,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.dto.AsientoDTO
+import org.example.project.dto.FilaAsientosDTO
 
 @Composable
 fun FilaAsientos(
-    filaData: Pair<Int, List<Pair<Int, String>>>,
+    filaData: FilaAsientosDTO,
     seatSize: Dp,
     selectedSeats: List<AsientoDTO>,
     onSeatClick: (Int, Int, String) -> Unit
@@ -32,8 +33,9 @@ fun FilaAsientos(
             .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Número de fila
         Text(
-            text = "${filaData.first}",
+            text = "${filaData.fila}",
             fontWeight = FontWeight.Bold,
             fontSize = 12.sp,
             color = Color.Gray,
@@ -43,18 +45,19 @@ fun FilaAsientos(
             textAlign = TextAlign.Center
         )
 
+        // Asientos
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(filaData.second) { asiento ->
+            items(filaData.asientos) { asiento ->
                 Asiento(
-                    fila = filaData.first,
+                    fila = filaData.fila,
                     asiento = asiento,
                     size = seatSize,
                     isSelected = selectedSeats.contains(
-                        AsientoDTO(filaData.first, asiento.first)
+                        AsientoDTO(filaData.fila, asiento.columna)
                     ),
-                    onClick = { onSeatClick(filaData.first, asiento.first, asiento.second) }
+                    onClick = { onSeatClick(filaData.fila, asiento.columna, asiento.estado) }
                 )
             }
         }

@@ -1,5 +1,4 @@
-package org.example.project.interfaz.asientos
-
+package org.example.project.content.mapaAsientos
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -10,21 +9,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun IndicadorEscenario() {
+fun StageIndicator() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp, vertical = 8.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFF333333))
-            .padding(vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF4A148C),
+                        Color(0xFF6A1B9A)
+                    )
+                ),
+                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+            )
+            .padding(12.dp),
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

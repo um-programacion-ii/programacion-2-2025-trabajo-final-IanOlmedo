@@ -1,5 +1,4 @@
-package org.example.project.interfaz.asientos
-
+package org.example.project.content.mapaAsientos
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -16,14 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.example.project.dto.AsientoDTO
 import org.example.project.dto.MapaAsientosDTO
 
 @Composable
-fun MapaAsientosInterfaz(
+fun SeatMapScreen(
     eventoId: Long,
     mapaAsientos: MapaAsientosDTO,
     onSeatsSelected: (List<AsientoDTO>) -> Unit,
@@ -36,7 +34,7 @@ fun MapaAsientosInterfaz(
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize()
     ) {
-        val availableWidth = maxWidth
+        val availableWidth = maxWidth - 60.dp
 
         val seatSize = remember(
             mapaAsientos.columnas,
@@ -50,73 +48,77 @@ fun MapaAsientosInterfaz(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xFF121212), Color(0xFF242424))
-                    )
-                )
+                .background(Color(0xFFF5F5F5))
         ) {
-            HeaderMapaAsientos(
-                disponibles = mapaAsientos.asientos.sumOf { fila -> fila.count { it.second == "DISPONIBLE" } },
-                seleccionados = selectedSeats.size,
-                maxSeats = maxSeats,
-                onBack = onBack
-            )
+        // Header
+        SeatMapHeader(
+            disponibles = mapaAsientos.disponibles(),
+            seleccionados = selectedSeats.size,
+            maxSeats = maxSeats,
+            onBack = onBack
+        )
 
-            LeyendaAsientos()
+        // Leyenda
+        SeatLegend()
 
-            ControlesZoom(
-                zoomLevel = zoomLevel,
-                onZoomChange = { newZoom ->
-                    zoomLevel = newZoom.coerceIn(0.6f, 2f)
-                }
-            )
+        // Controles de Zoom
+        ZoomControls(
+            zoomLevel = zoomLevel,
+            onZoomChange = { newZoom ->
+                zoomLevel = newZoom.coerceIn(0.6f, 2f)
+            }
+        )
 
-            IndicadorEscenario()
+        // Escenario
+        StageIndicator()
 
-            Box(
+        // Mapa de Asientos (scrolleable)
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            LazyColumn(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                contentPadding = PaddingValues(vertical = 8.dp)
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp),
-                    contentPadding = PaddingValues(vertical = 8.dp)
-                ) {
-                    items(mapaAsientos.asientos) { filaData ->
-                        FilaAsientos(
-                            filaData = filaData,
-                            seatSize = seatSize,
-                            selectedSeats = selectedSeats,
-                            onSeatClick = { fila, columna, estado ->
-                                if (estado != "DISPONIBLE") return@FilaAsientos
+                items(mapaAsientos.asientos) { filaData ->
+                    FilaAsientos(
+                        filaData = filaData,
+                        seatSize = seatSize,
+                        selectedSeats = selectedSeats,
+                        onSeatClick = { fila, columna, estado ->
+                            if (estado != "DISPONIBLE") return@FilaAsientos
 
-                                val seat = AsientoDTO(fila, columna)
-                                val isSelected = selectedSeats.contains(seat)
+                            val seat = AsientoDTO(fila, columna)
+                            val isSelected = selectedSeats.contains(seat)
 
-                                selectedSeats = if (isSelected) {
-                                    selectedSeats - seat
+                            selectedSeats = if (isSelected) {
+                                selectedSeats - seat
+                            } else {
+                                if (selectedSeats.size < maxSeats) {
+                                    selectedSeats + seat
                                 } else {
-                                    if (selectedSeats.size < maxSeats) {
-                                        selectedSeats + seat
-                                    } else {
-                                        selectedSeats
-                                    }
+                                    // TODO: Mostrar Toast o Snackbar
+                                    selectedSeats
                                 }
                             }
-                        )
-                    }
+                        }
+                    )
                 }
             }
-
-            if (selectedSeats.isNotEmpty()) {
-                PanelSeleccionAsientos(
-                    selectedSeats = selectedSeats,
-                    onConfirm = { onSeatsSelected(selectedSeats) }
-                )
-            }
         }
+
+        // Botón de confirmar
+        if (selectedSeats.isNotEmpty()) {
+            SelectedSeatsPanel(
+                selectedSeats = selectedSeats,
+                onConfirm = { onSeatsSelected(selectedSeats) }
+            )
+        }
+
+    }
     }
 }

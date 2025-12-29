@@ -1,25 +1,33 @@
-package org.example.project.interfaz.asientos
-
+package org.example.project.content.mapaAsientos
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LeyendaAsientos() {
-    Row(
+fun SeatLegend() {
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
+            .padding(horizontal = 16.dp),
+        elevation = CardDefaults.cardElevation(2.dp)
     ) {
-        LeyendaItem("Disponible", Color(0xFF4CAF50))
-        LeyendaItem("Seleccionado", Color(0xFF007AFF))
-        LeyendaItem("Bloqueado", Color.Gray)
-        LeyendaItem("Vendido", Color(0xFFE53935))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            LegendItem("Disponible", Color(0xFF4CAF50))
+            LegendItem("Seleccionado", Color(0xFF2196F3))
+            LegendItem("Bloqueado", Color(0xFF9E9E9E))
+            LegendItem("Vendido", Color(0xFFE53935))
+        }
     }
 }
