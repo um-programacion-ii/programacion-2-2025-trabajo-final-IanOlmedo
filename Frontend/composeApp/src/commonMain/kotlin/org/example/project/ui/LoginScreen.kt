@@ -27,8 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.example.project.estados.EstadoLogin
-import org.example.project.proxy.ModeloLogin
+import org.example.project.estados.LoginState
+import org.example.project.proxy.LoginViewModel
 
 
 @Composable
@@ -36,7 +36,7 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onGoToRegister: () -> Unit
 ) {
-    val viewModel = remember { ModeloLogin() }
+    val viewModel = remember { LoginViewModel() }
     val scope = rememberCoroutineScope()
 
     var username by remember { mutableStateOf("") }
@@ -45,7 +45,7 @@ fun LoginScreen(
     val state by viewModel.uiState.collectAsState()
 
     LaunchedEffect(state) {
-        if (state is EstadoLogin.Exitoso) {
+        if (state is LoginState.Exitoso) {
             onLoginSuccess()
         }
     }
@@ -89,9 +89,9 @@ fun LoginScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = state !is EstadoLogin.Cargando
+            enabled = state !is LoginState.Cargando
         ) {
-            if (state is EstadoLogin.Cargando) {
+            if (state is LoginState.Cargando) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
                     color = Color.White
@@ -107,9 +107,9 @@ fun LoginScreen(
             Text("¿No tenés cuenta? Registrate")
         }
 
-        if (state is EstadoLogin.Error) {
+        if (state is LoginState.Error) {
             Text(
-                text = (state as EstadoLogin.Error).message,
+                text = (state as LoginState.Error).message,
                 color = Color.Red
             )
         }

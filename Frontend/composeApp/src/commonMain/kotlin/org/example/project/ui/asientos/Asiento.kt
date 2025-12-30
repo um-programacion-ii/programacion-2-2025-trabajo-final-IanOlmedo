@@ -15,12 +15,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.project.dto.AsientoEstadoDTO
+import org.example.project.dto.AsientoStateDTO
 
 @Composable
 fun Asiento(
     fila: Int,
-    asiento: AsientoEstadoDTO,
+    asiento: AsientoStateDTO,
     size: Dp,
     isSelected: Boolean,
     onClick: () -> Unit

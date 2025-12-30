@@ -6,25 +6,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.example.project.dto.LoginDTO
-import org.example.project.estados.EstadoLogin
+import org.example.project.estados.LoginState
 
-class ModeloLogin{
-    private val _uiState = MutableStateFlow<EstadoLogin>(EstadoLogin.Estatico)
-    val uiState: StateFlow<EstadoLogin> = _uiState.asStateFlow()
+class LoginViewModel{
+    private val _uiState = MutableStateFlow<LoginState>(LoginState.Estatico)
+    val uiState: StateFlow<LoginState> = _uiState.asStateFlow()
 
     suspend fun login(username: String, password: String) {
         if (username.isBlank() || password.isBlank()) {
-            _uiState.value = EstadoLogin.Error("Usuario y contraseña son requeridos")
+            _uiState.value = LoginState.Error("Usuario y contraseña son requeridos")
             return
         }
 
-        _uiState.value = EstadoLogin.Cargando
+        _uiState.value = LoginState.Cargando
 
         val result = ApiClient.login(LoginDTO(username, password))
 
         result.fold(
             onSuccess = { token ->
-                _uiState.value = EstadoLogin.Exitoso("Login exitoso")
+                _uiState.value = LoginState.Exitoso("Login exitoso")
             },
             onFailure = { error ->
                 val message = when (error) {
@@ -33,13 +33,13 @@ class ModeloLogin{
                     is SocketTimeoutException -> "Conexión perdida"
                     else -> error.message ?: "Error en el login"
                 }
-                _uiState.value = EstadoLogin.Error(message)
+                _uiState.value = LoginState.Error(message)
             }
         )
     }
 
     fun resetState() {
-        _uiState.value = EstadoLogin.Estatico
+        _uiState.value = LoginState.Estatico
     }
 
 }

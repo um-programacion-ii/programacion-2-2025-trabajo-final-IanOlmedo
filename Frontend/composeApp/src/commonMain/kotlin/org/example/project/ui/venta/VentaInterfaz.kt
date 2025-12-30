@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import org.example.project.dto.AsientoDTO
-import org.example.project.estados.EstadoVenta
-import org.example.project.proxy.ModeloVenta
+import org.example.project.estados.VentaState
+import org.example.project.proxy.VentaViewModel
 
 
 @Composable
@@ -39,13 +39,13 @@ fun VentaInterfaz(
     onBack: () -> Unit,
     onSuccess: () -> Unit
 ) {
-    val viewModel = remember { ModeloVenta() }
+    val viewModel = remember { VentaViewModel() }
     val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsState()
     var persona by remember { mutableStateOf("") }
 
     LaunchedEffect(uiState) {
-        if (uiState is EstadoVenta.Exitoso) {
+        if (uiState is VentaState.Exitoso) {
             onSuccess()
         }
     }
@@ -59,7 +59,7 @@ fun VentaInterfaz(
     }
 
     when (uiState) {
-        EstadoVenta.Bloqueando -> {
+        VentaState.Bloqueando -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -71,7 +71,7 @@ fun VentaInterfaz(
             }
         }
 
-        EstadoVenta.Vendiendo -> {
+        VentaState.Vendiendo -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -80,13 +80,13 @@ fun VentaInterfaz(
             }
         }
 
-        is EstadoVenta.Error -> {
+        is VentaState.Error -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = (uiState as EstadoVenta.Error).message,
+                    text = (uiState as VentaState.Error).message,
                     color = Color.Red
                 )
             }
@@ -134,7 +134,7 @@ fun VentaInterfaz(
                             )
                         }
                     },
-                    enabled = uiState is EstadoVenta.Bloqueado,
+                    enabled = uiState is VentaState.Bloqueado,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Confirmar compra")

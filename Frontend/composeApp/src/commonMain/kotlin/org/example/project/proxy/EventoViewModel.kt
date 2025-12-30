@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.example.project.config.ApiConfig
 import org.example.project.dto.EventoDTO
 
-class ModeloEvento {
+class EventoViewModel {
 
     private val _events = MutableStateFlow<List<EventoDTO>>(emptyList())
     val events: StateFlow<List<EventoDTO>> = _events.asStateFlow()

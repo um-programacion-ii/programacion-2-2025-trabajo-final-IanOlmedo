@@ -26,7 +26,7 @@ import org.example.project.dto.EventoDTO
 import org.example.project.dto.LoginDTO
 import org.example.project.dto.LoginResponseDTO
 import org.example.project.dto.MapaAsientosDTO
-import org.example.project.dto.RegistrarDTO
+import org.example.project.dto.SingUpDTO
 import org.example.project.dto.VentaAsientoRequestDTO
 import org.example.project.dto.VentaAsientosResponseDTO
 
@@ -87,7 +87,7 @@ object ApiClient {
             println("Faltan tokens! JWT: ${jwtToken != null}, Session: ${sessionToken != null}")
         }
     }
-    suspend fun registrar(request: RegistrarDTO): Result<Unit> {
+    suspend fun registrar(request: SingUpDTO): Result<Unit> {
         return try {
             val response: HttpResponse = client.post {
                 url("${ApiConfig.baseUrl}/api/register")

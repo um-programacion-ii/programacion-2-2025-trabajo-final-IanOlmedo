@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.example.project.dto.CompraDTO
 
-class ModeloCompra : ViewModel() {
+class CompraViewModel : ViewModel() {
 
     private val _compras = MutableStateFlow<List<CompraDTO>>(emptyList())
     val compras: StateFlow<List<CompraDTO>> = _compras

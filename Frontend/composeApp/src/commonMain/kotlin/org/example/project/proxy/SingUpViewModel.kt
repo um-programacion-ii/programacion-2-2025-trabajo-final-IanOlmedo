@@ -2,24 +2,24 @@ package org.example.project.proxy
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.example.project.dto.RegistrarDTO
-import org.example.project.estados.EstadoRegistro
+import org.example.project.dto.SingUpDTO
+import org.example.project.estados.SignUpState
 
-class ModeloRegistro {
+class SingUpViewModel {
 
-    private val _uiState = MutableStateFlow<EstadoRegistro>(EstadoRegistro.Estatico)
-    val uiState: StateFlow<EstadoRegistro> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<SignUpState>(SignUpState.Estatico)
+    val uiState: StateFlow<SignUpState> = _uiState.asStateFlow()
 
     suspend fun registrar(login: String, password: String, email: String, firstName: String, lastName: String) {
         if (login.isBlank() || password.isBlank()) {
-            _uiState.value = EstadoRegistro.Error("Usuario y contraseña son requeridos")
+            _uiState.value = SignUpState.Error("Usuario y contraseña son requeridos")
             return
         }
 
-        _uiState.value = EstadoRegistro.Cargando
+        _uiState.value = SignUpState.Cargando
 
         val result = ApiClient.registrar(
-            RegistrarDTO(
+            SingUpDTO(
                 login,
                 password,
                 email,
@@ -31,10 +31,10 @@ class ModeloRegistro {
 
         result.fold(
             onSuccess = {
-                _uiState.value = EstadoRegistro.Exitoso("Registro exitoso")
+                _uiState.value = SignUpState.Exitoso("Registro exitoso")
             },
             onFailure = { error ->
-                _uiState.value = EstadoRegistro.Error(
+                _uiState.value = SignUpState.Error(
                     error.message ?: "Error en el registro"
                 )
             }
@@ -42,6 +42,6 @@ class ModeloRegistro {
     }
 
     fun resetState() {
-        _uiState.value = EstadoRegistro.Estatico
+        _uiState.value = SignUpState.Estatico
     }
 }

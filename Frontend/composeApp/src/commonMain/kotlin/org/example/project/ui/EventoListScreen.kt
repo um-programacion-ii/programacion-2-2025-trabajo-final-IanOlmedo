@@ -30,15 +30,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.example.project.dto.EventoDTO
-import org.example.project.proxy.ModeloCompra
-import org.example.project.proxy.ModeloEvento
+import org.example.project.proxy.CompraViewModel
+import org.example.project.proxy.EventoViewModel
 
 @Composable
 fun EventListScreen(
     onEventClick: (EventoDTO) -> Unit
 ) {
-    val eventoViewModel = remember { ModeloEvento() }
-    val comprasViewModel = remember { ModeloCompra() }
+    val eventoViewModel = remember { EventoViewModel() }
+    val comprasViewModel = remember { CompraViewModel() }
 
     val scope = rememberCoroutineScope()
     var mostrarCompras by remember { mutableStateOf(false) }

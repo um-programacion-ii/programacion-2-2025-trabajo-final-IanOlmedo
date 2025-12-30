@@ -5,14 +5,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.example.project.dto.AsientoDTO
 import org.example.project.dto.AsientosComprasDTO
 import org.example.project.dto.VentaAsientoRequestDTO
-import org.example.project.estados.EstadoVenta
+import org.example.project.estados.VentaState
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-class ModeloVenta {
+class VentaViewModel {
 
-    private val _uiState = MutableStateFlow<EstadoVenta>(EstadoVenta.Estatico)
-    val uiState: StateFlow<EstadoVenta> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<VentaState>(VentaState.Estatico)
+    val uiState: StateFlow<VentaState> = _uiState.asStateFlow()
     private var precioUnitario: Double = 0.0
     private var _asientosSeleccionados: List<AsientoDTO> = emptyList()
     val asientosSeleccionados: List<AsientoDTO>
@@ -30,16 +30,16 @@ class ModeloVenta {
         eventoId: Long,
         asientos: List<AsientoDTO>
     ) {
-        _uiState.value = EstadoVenta.Bloqueando
+        _uiState.value = VentaState.Bloqueando
 
         val result = ApiClient.bloquearAsientos(eventoId, asientos)
 
         result.fold(
             onSuccess = {
-                _uiState.value = EstadoVenta.Bloqueado
+                _uiState.value = VentaState.Bloqueado
             },
             onFailure = { error ->
-                _uiState.value = EstadoVenta.Error(
+                _uiState.value = VentaState.Error(
                     error.message ?: "Error al bloquear asientos"
                 )
             }
@@ -52,7 +52,7 @@ class ModeloVenta {
         precioTotal: Double,
         persona: String
     ) {
-        _uiState.value = EstadoVenta.Vendiendo
+        _uiState.value = VentaState.Vendiendo
 
         val request = VentaAsientoRequestDTO(
             eventoId = eventoId,
@@ -71,10 +71,10 @@ class ModeloVenta {
 
         result.fold(
             onSuccess = {
-                _uiState.value = EstadoVenta.Exitoso
+                _uiState.value = VentaState.Exitoso
             },
             onFailure = { error ->
-                _uiState.value = EstadoVenta.Error(
+                _uiState.value = VentaState.Error(
                     error.message ?: "Error al vender asientos"
                 )
             }

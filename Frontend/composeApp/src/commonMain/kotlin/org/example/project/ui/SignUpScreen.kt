@@ -27,14 +27,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.example.project.estados.EstadoRegistro
-import org.example.project.proxy.ModeloRegistro
+import org.example.project.estados.SignUpState
+import org.example.project.proxy.SingUpViewModel
 
 @Composable
 fun SignUpScreen(
     onRegistroSuccess: () -> Unit
 ) {
-    val viewModel = remember { ModeloRegistro() }
+    val viewModel = remember { SingUpViewModel() }
     val scope = rememberCoroutineScope()
 
     var login by remember { mutableStateOf("") }
@@ -46,7 +46,7 @@ fun SignUpScreen(
     val state by viewModel.uiState.collectAsState()
 
     LaunchedEffect(state) {
-        if (state is EstadoRegistro.Exitoso) {
+        if (state is SignUpState.Exitoso) {
             onRegistroSuccess()
         }
     }
@@ -117,9 +117,9 @@ fun SignUpScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = state !is EstadoRegistro.Cargando
+            enabled = state !is SignUpState.Cargando
         ) {
-            if (state is EstadoRegistro.Cargando) {
+            if (state is SignUpState.Cargando) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
                     color = Color.White
@@ -131,9 +131,9 @@ fun SignUpScreen(
 
         Spacer(Modifier.height(16.dp))
 
-        if (state is EstadoRegistro.Error) {
+        if (state is SignUpState.Error) {
             Text(
-                text = (state as EstadoRegistro.Error).message,
+                text = (state as SignUpState.Error).message,
                 color = Color.Red
             )
         }
