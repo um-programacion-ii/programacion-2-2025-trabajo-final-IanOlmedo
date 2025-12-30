@@ -1,4 +1,4 @@
-package org.example.project.interfaz
+package org.example.project.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +34,7 @@ import org.example.project.proxy.ModeloCompra
 import org.example.project.proxy.ModeloEvento
 
 @Composable
-fun EventoInterfaz(
+fun EventListScreen(
     onEventClick: (EventoDTO) -> Unit
 ) {
     val eventoViewModel = remember { ModeloEvento() }

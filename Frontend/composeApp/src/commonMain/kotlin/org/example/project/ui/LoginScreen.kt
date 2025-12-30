@@ -1,5 +1,4 @@
-package org.example.project.interfaz
-
+package org.example.project.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,27 +27,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.example.project.estados.EstadoRegistro
-import org.example.project.proxy.ModeloRegistro
+import org.example.project.estados.EstadoLogin
+import org.example.project.proxy.ModeloLogin
+
 
 @Composable
-fun RegistroInterfaz(
-    onRegistroSuccess: () -> Unit
+fun LoginScreen(
+    onLoginSuccess: () -> Unit,
+    onGoToRegister: () -> Unit
 ) {
-    val viewModel = remember { ModeloRegistro() }
+    val viewModel = remember { ModeloLogin() }
     val scope = rememberCoroutineScope()
 
-    var login by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var nombre by remember { mutableStateOf("") }
-    var apellido by remember { mutableStateOf("") }
 
     val state by viewModel.uiState.collectAsState()
 
     LaunchedEffect(state) {
-        if (state is EstadoRegistro.Exitoso) {
-            onRegistroSuccess()
+        if (state is EstadoLogin.Exitoso) {
+            onLoginSuccess()
         }
     }
 
@@ -59,14 +58,14 @@ fun RegistroInterfaz(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Registrarse",
+            text = "Iniciar Sesión",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 32.dp)
         )
 
         TextField(
-            value = login,
-            onValueChange = { login = it },
+            value = username,
+            onValueChange = { username = it },
             label = { Text("Usuario") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -81,61 +80,39 @@ fun RegistroInterfaz(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(Modifier.height(16.dp))
-
-        TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        TextField(
-            value = nombre,
-            onValueChange = { nombre = it },
-            label = { Text("Nombre") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        TextField(
-            value = apellido,
-            onValueChange = { apellido = it },
-            label = { Text("Apellido") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
         Spacer(Modifier.height(24.dp))
 
         Button(
             onClick = {
                 scope.launch {
-                    viewModel.registrar(login, password, email, nombre, apellido)
+                    viewModel.login(username, password)
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = state !is EstadoRegistro.Cargando
+            enabled = state !is EstadoLogin.Cargando
         ) {
-            if (state is EstadoRegistro.Cargando) {
+            if (state is EstadoLogin.Cargando) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
                     color = Color.White
                 )
             } else {
-                Text("Crear cuenta")
+                Text("Iniciar sesión")
             }
         }
 
         Spacer(Modifier.height(16.dp))
 
-        if (state is EstadoRegistro.Error) {
+        TextButton(onClick = onGoToRegister) {
+            Text("¿No tenés cuenta? Registrate")
+        }
+
+        if (state is EstadoLogin.Error) {
             Text(
-                text = (state as EstadoRegistro.Error).message,
+                text = (state as EstadoLogin.Error).message,
                 color = Color.Red
             )
         }
     }
 }
+

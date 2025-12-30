@@ -1,4 +1,4 @@
-package org.example.project.interfaz
+package org.example.project.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

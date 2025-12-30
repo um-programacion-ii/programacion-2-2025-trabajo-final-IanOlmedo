@@ -1,4 +1,4 @@
-package org.example.project.interfaz
+package org.example.project.ui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -12,14 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import org.example.project.Navegacion.PantallaVenta
+import org.example.project.routing.VentaRoute
 import org.example.project.content.mapaAsientos.SeatMapScreen
 import org.example.project.dto.MapaAsientosDTO
 import org.example.project.proxy.ApiClient
 
 
 @Composable
-fun AsientosInterfaz(
+fun AsientosScreen(
     eventId: Long,
     precioUnitario: Double,
     onBack: () -> Unit
@@ -56,7 +56,7 @@ fun AsientosInterfaz(
                 onSeatsSelected = { seats ->
                     navigator.push(
 
-                        PantallaVenta(
+                        VentaRoute(
                             eventoId = eventId,
                             seats = seats,
                             precioUnitario = precioUnitario

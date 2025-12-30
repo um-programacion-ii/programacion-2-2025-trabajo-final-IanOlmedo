@@ -1,17 +1,17 @@
-package org.example.project.Navegacion
+package org.example.project.routing
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.project.dto.EventoDTO
-import org.example.project.interfaz.AsientosInterfaz
+import org.example.project.ui.AsientosScreen
 
-data class PantallaAsientos(val event: EventoDTO) : Screen {
+data class AsientosRoute(val event: EventoDTO) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        AsientosInterfaz(
+        AsientosScreen(
             eventId = event.id,
             precioUnitario = event.precioEntrada,
             onBack = { navigator.pop() }

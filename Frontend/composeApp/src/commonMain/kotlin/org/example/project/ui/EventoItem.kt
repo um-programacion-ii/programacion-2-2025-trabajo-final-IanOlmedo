@@ -1,4 +1,4 @@
-package org.example.project.interfaz
+package org.example.project.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
