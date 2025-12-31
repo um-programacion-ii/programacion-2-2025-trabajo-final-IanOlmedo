@@ -41,6 +41,7 @@ import tech.jhipster.web.util.ResponseUtil;
  *   - /api/eventos/locales/{id} usa "id" = idLocal (PK de la BD local) para debug.
  *   - /api/eventos/{id}/asientos usa "id" = externalId y traduce a idLocal internamente
  */
+
 @RestController
 @RequestMapping("/api/eventos")
 public class EventoResource {

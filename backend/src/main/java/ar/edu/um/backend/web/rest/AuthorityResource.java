@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+// este archivo es el controlador REST para gestionar las autoridades del sistema.
+
 /**
  * REST controller for managing {@link ar.edu.um.backend.domain.Authority}.
  */

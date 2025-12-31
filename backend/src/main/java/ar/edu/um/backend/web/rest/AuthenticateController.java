@@ -29,6 +29,8 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.*;
 
+//este archivo es el controlador para autenticar a los usuarios.
+
 /**
  * Controller to authenticate users.
  */

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+
+//Todo este archivo es para gestionar las operaciones REST relacionadas con los asientos del sistema.
 /**
  * REST controller for managing {@link ar.edu.um.backend.domain.Asiento}.
  */

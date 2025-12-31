@@ -134,7 +134,7 @@ public class VentaServiceImpl implements VentaService {
      *
      * - cantidadAsientos coincide con la cantidad de asientos asociados.
      *   Significa que el número que dice la venta (cantidadAsientos) tiene que coincidir
-     *   con la cantidad real de asientosque están dentro de la venta.)
+     *   con la cantidad real de asientos que están dentro de la venta.)
      *
      * - todos los asientos pertenecen al mismo evento de la venta
      * - ningún asiento está ya en estado VENDIDO

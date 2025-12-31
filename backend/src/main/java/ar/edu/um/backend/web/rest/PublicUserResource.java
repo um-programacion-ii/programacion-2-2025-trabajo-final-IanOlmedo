@@ -31,6 +31,7 @@ public class PublicUserResource {
         this.userService = userService;
     }
 
+
     /**
      * {@code GET /users} : get all users with only public information - calling this method is allowed for anyone.
      *
